@@ -1,69 +1,58 @@
 #ifndef ACCOUNT_H_
 #define ACCOUNT_H_
-#include "../Event/depositeevent.h"
-#include "../Event/withdrawevent.h"
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <map>
+
+#include "../Event/accountevent.h"
 #include "../Event/undolastevent.h"
 #include "../Event/listevent.h"
 #include "../Handler/eventhandler.h"
 #include "../Dto/dtoaccountevent.h"
-#include <iostream>
 
-enum EventType{DEPOSITE,WITHDRAW};
 
-class Account : public EventHandler<DepositeEvent>::Listener, public EventHandler<WithdrawEvent>::Listener,
-                public EventHandler<UndoLastEvent>::Listener, public EventHandler<ListEvent>::Listener{
+class Account : public EventHandler<AccountEvent>::Listener,
+                public EventHandler<ListEvent>::Listener{
 
     private:
         int AccountId;
         double AccountMoney;
-        std::vector<DtoAccountEvent *> AllEvents;
+        int OldVersion;
+        int NewVersion;
 
-        //Deposite Command
-        void Update(DepositeEvent * Deposite, EventHandler<DepositeEvent> & Sender){
-            if(AccountDao.Deposite(AccountId, Deposite->Money)){
-                AccountMoney += Deposite->Money;
-                AllEvents.push_back(new DtoAccountEvent(AccountId, Deposite->Id,  DEPOSITE, Deposite->Money));
-                std::cout << "Deposite Sucessfull" << std::endl;
+        std::vector<std::pair<int, Event * > > AllEvents;
+    
+        void Update(AccountEvent * AcEvent, EventHandler<AccountEvent> & Sender)
+        {  
+            if(AcEvent->EventType==DEPOSITE)
+            {    
+                AccountMoney += AcEvent->Value;               
             }
-        }
+            else
+            {
+                AccountMoney -= AcEvent->Value;               
+            }          
 
-        //Withdraw Command
-        void Update(WithdrawEvent * Withdraw, EventHandler<WithdrawEvent> & Sender){
+            AcEvent->Version = ++NewVersion;
+            AllEvents.push_back(std::make_pair(AccountId, AcEvent));
+         }
 
-            if(AccountMoney - Withdraw->Money >= 0 && AccountDao.Withdraw(AccountId, Withdraw->Money)){
+        void Update(ListEvent * SvEvent, EventHandler<ListEvent> & Sender){
 
-                AccountMoney -= Withdraw->Money;
-                AllEvents.push_back(new DtoAccountEvent(AccountId, Withdraw->Id, WITHDRAW, Withdraw->Money));
+            for(std::vector<std::pair<int, Event *> >::const_iterator it = AllEvents.begin(); it != AllEvents.end(); ++it){
 
-            }else{
+                std::cout << std::get<1>(*it) << std::endl;
 
-                std::cout << " Withdraw Failed " << std::endl;            
+            }
 
-            };
-        }
-
-        //List All Events in memory
-        void Update(ListEvent * List, EventHandler<ListEvent> & Sender){
-            for(std::vector<DtoAccountEvent *>::const_iterator it = AllEvents.begin(); it != AllEvents.end(); ++it)
-                std::cout << **it << std::endl;
-        }
-
-        //Undo Last Event
-        void Update(UndoLastEvent * UndoLast, EventHandler<UndoLastEvent> & Sender){
-
-            std::vector<DtoAccountEvent *>::const_iterator it = AllEvents.end()-1; //Get last event of account
-            if(*it != 0){
-                DtoAccountEvent evt = **it;
-                //std::cout << "Event Deleted - " << **it << std::endl;
-                AllEvents.erase(it); //Delete event from the list
-                evt.getEventType()==0?AccountMoney -= evt.getValue():AccountMoney += evt.getValue(); //Set the balance to previous state
-             };
         }
 
     public:
-
-        Account(int AccountId, double AccountMoney) : AccountId(AccountId), AccountMoney(AccountMoney) {};
+        Account() {};
+        Account(int AccountId) : AccountId(AccountId), AccountMoney(0), OldVersion(0), NewVersion(0) {};
 };
 
 
 #endif
+              //  AllEvents.push_back(std::make_pair(Ac, new AccountEvent(++seed, WITHDRAW, Value)));

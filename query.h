@@ -8,22 +8,20 @@
 #include "Model/client.h"
 
 class Query{
-
-
     private:
+
         SummaryHandler Summary;
         ListHandler List;
+
     public:
         //std::vector<DtoAccountEvent>
-        void ListAllEvents(std::shared_ptr<Account> Ac) {
-            std::vector<DtoAccountEvent> AccountEvents;
-            List.EventHandler<ListEvent>::Attach(Ac);
-            List.EventHandler<ListEvent>::Notify(Ac, new ListEvent());
+//        DtoAccountSummary SummaryAccount(int AccountId) {
 
-        };
 
-        std::vector<DtoAccountSummary> SummaryAllAccounts(int ClientId) {
+ //       };
 
+
+        std::vector<DtoAccountSummary> SummaryAllAccounts() {
             std::vector<DtoAccountSummary> AllAccounts;
             //pqxx::result res = *CliRetrieveDao(ClientId)
             return AllAccounts;

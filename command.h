@@ -1,7 +1,12 @@
 #ifndef COMMAND_H_
 #define COMMAND_H_
 #include "Handler/undolasthandler.h"
-#include "Handler/accounthandler.h"
+#include "Handler/depositeaccounthandler.h"
+#include "Handler/withdrawaccounthandler.h"
+#include "Handler/createaccounthandler.h"
+#include "Event/createaccountevent.h"
+#include "Event/depositeaccountevent.h"
+#include "Event/withdrawaccountevent.h"
 #include "Model/account.h"
 #include "Dao/daoaccount.h"
 #include "Dto/dtoaccount.h"
@@ -12,44 +17,60 @@
 
 class Command{
     private:
-        AccountHandler Handler;
+        DepositeAccountHandler Deposite;
+        WithdrawAccountHandler Withdraw;
+        CreateAccountHandler   CreateAccount;
         UndoLastHandler UndoLast;
         ListHandler List;
         unsigned int seed = 0;
+        
+        std::vector<std::pair<std::shared_ptr<Account>, Event * > > AllEvents;
+
     public:        
-        std::shared_ptr<Account> CreateAccount(int AccountId)
-        {            
-            std::shared_ptr<Account> Ac(new Account(AccountId));         
-            return Ac;
-        }
 
-        void DoDeposite(std::shared_ptr<Account> Ac, double Value)
-        {           
-              Handler.EventHandler<AccountEvent>::Attach(Ac);
-              Handler.EventHandler<AccountEvent>::Notify(Ac, new AccountEvent(DEPOSITE, Value));           
-        }
-
-        void DoWithdraw(std::shared_ptr<Account> Ac, double Value)
+        void DoCreate(std::shared_ptr<Account> Ac, int ClientId)
         {
-            try
-            {
-                  Handler.EventHandler<AccountEvent>::Attach(Ac);
-                  Handler.EventHandler<AccountEvent>::Notify(Ac, new AccountEvent(WITHDRAW, Value));            
+            AllEvents.push_back(std::make_pair(Ac, new CreateAccountEvent(ClientId)));
+        }
 
-            }
-            catch(std::exception e)
-            { 
-                throw; 
-            }
+        void DoDeposite(std::shared_ptr<Account> Ac, int ClienteId, double Value)
+        {           
+            AllEvents.push_back(std::make_pair(Ac, new DepositeAccountEvent(ClienteId, Value)));      
+        }
+
+        void DoWithdraw(std::shared_ptr<Account> Ac, int ClienteId, double Value)
+        {
+            AllEvents.push_back(std::make_pair(Ac, new WithdrawAccountEvent(ClienteId, Value)));      
         }
         
         void Save(std::shared_ptr<Account> Ac)
         {                     
-            List.EventHandler<ListEvent>::Attach(Ac);
-            List.EventHandler<ListEvent>::Notify(Ac, new ListEvent());
-//            List.EventHandler<ListEvent>::Notify(Ac, new ListEvent());
-//            List.EventHandler<ListEvent>::Notify(Ac, new ListEvent());
+           for(std::vector<std::pair<std::shared_ptr<Account>, Event *> >::const_iterator it = AllEvents.begin(); it != AllEvents.end(); ++it){ 
 
+                switch(std::get<1>(*it)->EventType){
+                    
+                    case CREATE:
+                        CreateAccount.EventHandler<CreateAccountEvent>::Attach(std::get<0>(*it));                
+                        CreateAccount.EventHandler<CreateAccountEvent>::Notify(std::get<0>(*it), std::get<1>(*it));      
+                    break;
+
+                    case DEPOSITE:
+                        Deposite.EventHandler<DepositeAccountEvent>::Attach(std::get<0>(*it));                
+                        Deposite.EventHandler<DepositeAccountEvent>::Notify(std::get<0>(*it), std::get<1>(*it));  
+                    break;
+
+                    case WITHDRAW:
+                        Withdraw.EventHandler<WithdrawAccountEvent>::Attach(std::get<0>(*it));                
+                        Withdraw.EventHandler<WithdrawAccountEvent>::Notify(std::get<0>(*it), std::get<1>(*it));  
+                    break;          
+
+
+                    default:
+                    break;
+                };
+              
+
+            };           
         };
 };
 
@@ -64,7 +85,6 @@ class Command{
 
 
                 UndoLast.EventHandler<UndoLastEvent>::Attach(Ac);
-
                 UndoLast.EventHandler<UndoLastEvent>::Notify(Ac, new UndoLastEvent());
 
 

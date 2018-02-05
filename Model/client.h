@@ -1,7 +1,11 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
-#include "../Event/accountevent.h"
-#include "../Handler/accounthandler.h"
+#include "../Event/createaccountevent.h"
+#include "../Event/depositeaccountevent.h"
+#include "../Event/withdrawaccountevent.h"
+#include "../Handler/createaccounthandler.h"
+#include "../Handler/depositeaccounthandler.h"
+#include "../Handler/withdrawaccounthandler.h"
 #include "../Event/summaryevent.h"
 #include "../Handler/summaryhandler.h"
 #include "account.h"

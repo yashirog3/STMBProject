@@ -2,13 +2,14 @@
 #define EVENT_H_
 #include <ostream>
 
-enum Type{DEPOSITE, WITHDRAW};
+enum Type{CREATE, DEPOSITE, WITHDRAW};
 
 class Event{
     public:
+        int ClientId;
         int Version;
         int EventType;
-        double Value;
+        double Value;        
         bool NewEvent;
 
     friend std::ostream &operator << (std::ostream &os, Event * ev){

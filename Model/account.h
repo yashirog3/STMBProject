@@ -5,14 +5,18 @@
 #include <vector>
 #include <map>
 
-#include "../Event/accountevent.h"
+#include "../Handler/createaccounthandler.h"
+#include "../Handler/depositeaccounthandler.h"
+#include "../Handler/withdrawaccounthandler.h"
 #include "../Event/undolastevent.h"
 #include "../Event/listevent.h"
 #include "../Handler/eventhandler.h"
 #include "../Dto/dtoaccountevent.h"
 
 
-class Account : public EventHandler<AccountEvent>::Listener,
+class Account : public EventHandler<DepositeAccountEvent>::Listener,
+                public EventHandler<WithdrawAccountEvent>::Listener,
+                public EventHandler<CreateAccountEvent>::Listener,
                 public EventHandler<ListEvent>::Listener{
 
     private:
@@ -23,20 +27,21 @@ class Account : public EventHandler<AccountEvent>::Listener,
 
         std::vector<std::pair<int, Event * > > AllEvents;
     
-        void Update(AccountEvent * AcEvent, EventHandler<AccountEvent> & Sender)
+        void Update(DepositeAccountEvent * AcEvent, EventHandler<DepositeAccountEvent> & Sender)
         {  
-            if(AcEvent->EventType==DEPOSITE)
-            {    
-                AccountMoney += AcEvent->Value;               
-            }
-            else
-            {
-                AccountMoney -= AcEvent->Value;               
-            }          
+            AccountMoney += AcEvent->Value;               
+        }
 
-            AcEvent->Version = ++NewVersion;
-            AllEvents.push_back(std::make_pair(AccountId, AcEvent));
-         }
+        void Update(WithdrawAccountEvent * AcEvent, EventHandler<WithdrawAccountEvent> & Sender)
+        {  
+            AccountMoney += AcEvent->Value;               
+        }
+
+        void Update(CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender)
+        {  
+//            AccountMoney += AcEvent->Value;               
+            std::cout << "Account Created" << std::endl;
+        }
 
         void Update(ListEvent * SvEvent, EventHandler<ListEvent> & Sender){
 

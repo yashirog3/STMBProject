@@ -12,23 +12,25 @@ int main()
     Command Commands;
     Query Queries;
 
-    std::shared_ptr<Account> Ac = Commands.CreateAccount(++seed);
-    std::shared_ptr<Account> Ad = Commands.CreateAccount(++seed);
-    std::shared_ptr<Account> Ae = Commands.CreateAccount(++seed);
-    std::shared_ptr<Account> Af = Commands.CreateAccount(++seed);
+    std::shared_ptr<Account> Ac(new Account());
+    Commands.DoCreate(Ac, 1);
+    std::shared_ptr<Account> Ad(new Account());
+    Commands.DoCreate(Ad, 1);
+    std::shared_ptr<Account> Ae(new Account());
+    Commands.DoCreate(Ae, 1);
 
-    Commands.DoDeposite(Ac, 200);
-    Commands.DoDeposite(Ac, 1200);
-    Commands.DoWithdraw(Ac, 1300);
+    Commands.DoDeposite(Ac, 1, 200);
+    Commands.DoDeposite(Ac, 1, 1200);
+    Commands.DoWithdraw(Ac, 1, 1300);
 
-    Commands.DoDeposite(Ad, 2500);
-    Commands.DoWithdraw(Ad, 1400);
+    Commands.DoDeposite(Ad, 1, 2500);
+    Commands.DoWithdraw(Ad, 1, 1400);
 
-    Commands.DoDeposite(Ae, 1600);
+    Commands.DoDeposite(Ae, 1, 1600);
 
     Commands.Save(Ac);    
 
-    Commands.DoDeposite(Ae, 1100);
+    Commands.DoDeposite(Ae, 1, 1100);
 
     Commands.Save(Ad);
     Commands.Save(Ae);

@@ -1,18 +1,18 @@
-#Mini Bank Project
+# Mini Bank Project
 A C++ Event Database Program
 
-##Getting Started
+## Getting Started
 
 
-###Prerequesites
+### Prerequesites
 * libpqxx
 * Postgresql
 
-##Running The Testes
+## Running The Testes
 
 Tests will be added at end of development.
 
-##Author
+## Author
 
 * **Thiago Giecht**
 

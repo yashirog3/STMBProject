@@ -4,37 +4,34 @@
 #include "Dao/daoaccount.h"
 
 using namespace std;
-
-static unsigned int seed = 0;
+Command Commands;
+EventRepository Repository;
 
 int main()
 {
-    Command Commands;
     Query Queries;
+    std::shared_ptr<Account> Ac(new Account(1, &Repository));
+    std::shared_ptr<Account> Ad(new Account(2, &Repository));
 
-    std::shared_ptr<Account> Ac(new Account());
     Commands.DoCreate(Ac, 1);
-    std::shared_ptr<Account> Ad(new Account());
-    Commands.DoCreate(Ad, 1);
-    std::shared_ptr<Account> Ae(new Account());
-    Commands.DoCreate(Ae, 1);
+    Commands.DoCreate(Ad, 2);
+    Commands.DoDeposite(Ac, 1100);
+    Commands.DoDeposite(Ad, 1200);
+    Commands.DoWithdraw(Ac, 1000);
+    Commands.DoDeposite(Ad, 1400);
+    Commands.DoDeposite(Ad, 200.54);
+    Commands.DoDeposite(Ac, 100);   
+    Commands.DoPersist(Ad);
+    Commands.DoWithdraw(Ac, 200);
+    Commands.DoPersist(Ac);
 
-    Commands.DoDeposite(Ac, 1, 200);
-    Commands.DoDeposite(Ac, 1, 1200);
-    Commands.DoWithdraw(Ac, 1, 1300);
-
-    Commands.DoDeposite(Ad, 1, 2500);
-    Commands.DoWithdraw(Ad, 1, 1400);
-
-    Commands.DoDeposite(Ae, 1, 1600);
-
-    Commands.Save(Ac);    
-
-    Commands.DoDeposite(Ae, 1, 1100);
-
-    Commands.Save(Ad);
-    Commands.Save(Ae);
+    
+    Queries.GetAllEvents(new std::shared_ptr<Account>(new Account(1, &Repository)), 1, &Repository);
+ 
+    
+    
 /*
+
     Commands.ListAllEvents();
     cout << "----------------------------" << endl;
     Queries.ListAllEvents(Ad);

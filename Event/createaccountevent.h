@@ -5,27 +5,13 @@
 class CreateAccountEvent : public Event{
 
 public:
-    CreateAccountEvent(int ClientId){
+    CreateAccountEvent(int IdClient){
 
         this->Version = 0;
-        this->Value = 0;
-        this->ClientId = ClientId;
-        this->EventType = CREATE;
+        this->Value = 0;        
         this->NewEvent = true;
 
-    };  
-
-
-    CreateAccountEvent(int Version, int ClientId){
-
-        this->Version = Version;
-        this->Value = 0;
-        this->ClientId = ClientId;
-        this->EventType = CREATE;
-        this->NewEvent = false;
-
-    };  
-
+    };
 };
 
 

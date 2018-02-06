@@ -6,18 +6,15 @@ enum Type{CREATE, DEPOSITE, WITHDRAW};
 
 class Event{
     public:
-        int ClientId;
         int Version;
         int EventType;
-        double Value;        
+        double Value;
         bool NewEvent;
 
     friend std::ostream &operator << (std::ostream &os, Event * ev){
-
-        os << "Version: " << ev->Version << " - Event Type: " << ((ev->EventType==DEPOSITE)?"Deposite":"Withdraw") << " - Value: " << ev->Value;
+        os << " Version: " << ev->Version << " - Event Type: " << (ev->EventType==CREATE?"Create":ev->EventType==DEPOSITE?"Deposite":"Withdraw") << " - Value: " << ev->Value;
         return os;
-
-    }    
+    }
 };
 
 

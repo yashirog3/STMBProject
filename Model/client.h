@@ -6,19 +6,11 @@
 #include "../Handler/createaccounthandler.h"
 #include "../Handler/depositeaccounthandler.h"
 #include "../Handler/withdrawaccounthandler.h"
-#include "../Event/summaryevent.h"
-#include "../Handler/summaryhandler.h"
+
 #include "account.h"
 #include <iostream>
 
-class Client : public EventHandler<SummaryEvent>::Listener{
-
-    private:
-        void Update(SummaryEvent * Sumary, EventHandler<SummaryEvent> & Sender ){
-
-            std::cout << " Everything was here " << std::endl;
-
-        }
+class Client{
 
     public:
 

@@ -4,7 +4,8 @@
 #include <map>
 #include "Event/event.h"
 
-class EventRepository{    
+class EventRepository
+{    
     public:
         std::vector<std::pair<int, Event *> > AllEvents; 
 };

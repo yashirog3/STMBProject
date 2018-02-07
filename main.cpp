@@ -19,16 +19,21 @@ int main()
     Commands.DoDeposite(Ad, 1200);
     Commands.DoWithdraw(Ac, 1000);
     Commands.DoDeposite(Ad, 1400);
-    Commands.DoDeposite(Ad, 200.54);
+    Commands.DoDeposite(Ad, 254);
     Commands.DoDeposite(Ac, 100);   
     Commands.DoPersist(Ad);
     Commands.DoWithdraw(Ac, 200);
+    std::cout << "---------------------------------------------------------" << std::endl;
     Commands.DoPersist(Ac);
-
+    std::cout << "---------------------------------------------------------" << std::endl;
+    std::shared_ptr<Account> Ae(Queries.GetAllEvents(1, &Repository));
+    Commands.DoPersist(Ae);
+    std::cout << "---------------------------------------------------------" << std::endl;
     
-    Queries.GetAllEvents(new std::shared_ptr<Account>(new Account(1, &Repository)), 1, &Repository);
- 
-    
+    Commands.DoDeposite(Ac, 100);   
+    Commands.DoPersist(Ac);
+    Commands.DoPersist(Ad);
+    Commands.DoPersist(Ae);
     
 /*
 

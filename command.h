@@ -23,7 +23,6 @@ class Command
         WithdrawAccountHandler Withdraw;
         CreateAccountHandler   CreateAccount;
         PersistAccountHandler  Persistence;
-        unsigned int seed = 0;
 
     public:
 
@@ -32,20 +31,35 @@ class Command
             CreateAccount.Attach(Ac);
             CreateAccount.Notify(Ac, new CreateAccountEvent(ClientId));
         }
-        void DoDeposite(std::shared_ptr<Account> Ac, double Value)
+
+        void DoRemove(std::shared_ptr<Account> Ac){
+
+            CreateAccount.Dettach(Ac);
+            Deposite.Dettach(Ac);
+            Withdraw.Dettach(Ac);
+
+        }
+        
+        void DoDeposite(std::shared_ptr<Account> Ac, double Value, int Version = 0)
         {
             Deposite.Attach(Ac);
-            Deposite.Notify(Ac, new DepositeAccountEvent(Value));
+            if(Version > 0)
+                Deposite.Notify(Ac, new DepositeAccountEvent(Version, Value));
+            else
+                Deposite.Notify(Ac, new DepositeAccountEvent(Value));
         }
 
-        void DoWithdraw(std::shared_ptr<Account> Ac, double Value)
+        void DoWithdraw(std::shared_ptr<Account> Ac, double Value, int Version = 0)
         {
             Withdraw.Attach(Ac);
-            Withdraw.Notify(Ac, new WithdrawAccountEvent(Value));
-        }
+            if(Version > 0)
+                Withdraw.Notify(Ac, new WithdrawAccountEvent(Version, Value));
+            else
+                Withdraw.Notify(Ac, new WithdrawAccountEvent(Value));                
+        }        
 
         void DoPersist(std::shared_ptr<Account> Ac)
-        {
+        {            
             Persistence.Attach(Ac);
             Persistence.Notify(Ac, new PersistAccountEvent());
         }

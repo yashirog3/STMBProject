@@ -4,7 +4,8 @@
 #include "eventhandler.h"
 
 
-class UndoAccountHandler : public EventHandler<UndoAccountHandler>{
+class UndoAccountHandler : public EventHandler<UndoAccountHandler>
+{
 
 };
 

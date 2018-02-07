@@ -9,8 +9,8 @@
 #include "../Handler/depositeaccounthandler.h"
 #include "../Handler/withdrawaccounthandler.h"
 #include "../Handler/eventhandler.h"
-#include "../Dto/dtoaccountevent.h"
 #include "../eventrepository.h"
+#include "../Dao/daoaccount.h"
 
 class Account : public EventHandler<DepositeAccountEvent>::Listener, public EventHandler<WithdrawAccountEvent>::Listener,
 public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAccountEvent>::Listener
@@ -21,7 +21,7 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         int AccountId;
         double AccountMoney;
         int OldVersion;
-        int NewVersion;
+        int NewVersion;        
 
         std::vector<std::pair<int, Event *> > AllEvents; 
         EventRepository * Repository;
@@ -32,7 +32,6 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
             {
 
                 AcEvent->Version = ++NewVersion;
-                AcEvent->NewEvent = false;
                 Repository->AllEvents.push_back(std::make_pair(AccountId, AcEvent));
             }
         }
@@ -43,7 +42,6 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
             if(AcEvent->NewEvent)
             {              
                 AcEvent->Version = ++NewVersion;
-                AcEvent->NewEvent = false;
                 Repository->AllEvents.push_back(std::make_pair(AccountId, AcEvent));
             }
         }
@@ -69,9 +67,13 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         {
             for(std::vector<std::pair<int, Event *> >::const_iterator it = Repository->AllEvents.begin(); it != Repository->AllEvents.end(); ++it)
             {
-                    if(std::get<1>(*it)->NewEvent)
+                    if(std::get<0>(*it) == AccountId && std::get<1>(*it)->NewEvent)
                     {
-                        std::get<1>(*it)->NewEvent = false;
+                        pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
+                        pqxx::work wk(conn);
+                        DaoAccount Dao(conn, wk);
+                        if(Dao.InsertAccountEvent(new DtoAccountEvent(AccountId, std::get<1>(*it)->Version,std::get<1>(*it)->EventType, std::get<1>(*it)->Value))) std::cout << std::get<0>(*it) << std::endl;
+                        
                     }
             }
         }        

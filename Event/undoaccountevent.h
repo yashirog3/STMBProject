@@ -2,7 +2,8 @@
 #define UNDOACCOUNTEVENT_H_
 #include "event.h"
 
-class UndoAccountEvent : public Event{
+class UndoAccountEvent : public Event
+{
 
 };
 

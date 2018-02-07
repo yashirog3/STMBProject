@@ -10,7 +10,8 @@
 #include "account.h"
 #include <iostream>
 
-class Client{
+class Client
+{
 
     public:
 

@@ -1,15 +1,15 @@
-#ifndef CREATEACCOUNTEVENT_H_
-#define CREATEACCOUNTEVENT_H_
+#ifndef REMOVEACCOUNTEVENT_H_
+#define REMOVEACCOUNTEVENT_H_
 #include "event.h"
 
-class CreateAccountEvent : public Event{
+class RemoveAccountEvent : public Event{
 
 public:
-    CreateAccountEvent(int IdClient){
+    RemoveAccountEvent(int IdClient){
 
         this->IdClient = IdClient;
         this->Version = 0;
-        this->EventType = CREATE;
+        this->EventType = REMOVE;
         this->Value = 0;        
         this->NewEvent = true;
 

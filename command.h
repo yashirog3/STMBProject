@@ -7,6 +7,9 @@
 #include "Event/depositeaccountevent.h"
 #include "Event/withdrawaccountevent.h"
 #include "Event/persistaccountevent.h"
+#include "Event/removeaccountevent.h"
+#include "Handler/removeaccounthandler.h"
+
 #include "Model/account.h"
 #include "Dao/daoaccount.h"
 #include "Dto/dtoaccount.h"
@@ -19,49 +22,45 @@
 class Command
 {
     private:
+
         DepositeAccountHandler Deposite;
         WithdrawAccountHandler Withdraw;
         CreateAccountHandler   CreateAccount;
+        RemoveAccountHandler   RemoveAccount;
         PersistAccountHandler  Persistence;
 
     public:
 
-        void DoCreate(std::shared_ptr<Account> Ac, int ClientId)
+        void DoCreate(std::shared_ptr<Account> Ac, CreateAccountEvent * AcEvent)
         {
             CreateAccount.Attach(Ac);
-            CreateAccount.Notify(Ac, new CreateAccountEvent(ClientId));
+            CreateAccount.Notify(Ac, AcEvent);            
         }
 
-        void DoRemove(std::shared_ptr<Account> Ac){
+        void DoRemove(std::shared_ptr<Account> Ac, RemoveAccountEvent * AcEvent){
 
-            CreateAccount.Dettach(Ac);
-            Deposite.Dettach(Ac);
-            Withdraw.Dettach(Ac);
+            RemoveAccount.Attach(Ac);
+            RemoveAccount.Notify(Ac, AcEvent); 
 
         }
         
-        void DoDeposite(std::shared_ptr<Account> Ac, double Value, int Version = 0)
+        void DoDeposite(std::shared_ptr<Account> Ac, DepositeAccountEvent * AcEvent)
         {
+         
             Deposite.Attach(Ac);
-            if(Version > 0)
-                Deposite.Notify(Ac, new DepositeAccountEvent(Version, Value));
-            else
-                Deposite.Notify(Ac, new DepositeAccountEvent(Value));
+            Deposite.Notify(Ac, AcEvent);                
         }
 
-        void DoWithdraw(std::shared_ptr<Account> Ac, double Value, int Version = 0)
+        void DoWithdraw(std::shared_ptr<Account> Ac, WithdrawAccountEvent * AcEvent)
         {
             Withdraw.Attach(Ac);
-            if(Version > 0)
-                Withdraw.Notify(Ac, new WithdrawAccountEvent(Version, Value));
-            else
-                Withdraw.Notify(Ac, new WithdrawAccountEvent(Value));                
+            Withdraw.Notify(Ac, AcEvent);                
         }        
 
-        void DoPersist(std::shared_ptr<Account> Ac)
+        void DoPersist(std::shared_ptr<Account> Ac, PersistAccountEvent * AcEvent)
         {            
             Persistence.Attach(Ac);
-            Persistence.Notify(Ac, new PersistAccountEvent());
+            Persistence.Notify(Ac, AcEvent);
         }
 };
 

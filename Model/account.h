@@ -13,7 +13,7 @@
 #include "../Dao/daoaccount.h"
 
 class Account : public EventHandler<DepositeAccountEvent>::Listener, public EventHandler<WithdrawAccountEvent>::Listener,
-public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAccountEvent>::Listener
+public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAccountEvent>::Listener, public EventHandler<RemoveAccountEvent>::Listener
 {
 
     private:
@@ -23,26 +23,32 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         int OldVersion;
         int NewVersion;        
 
-        std::vector<std::pair<int, Event *> > AllEvents; 
         EventRepository * Repository;
+
+        std::vector<Event *> AllEvents; 
         
         void Update(CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender)
-        {
-            if(AcEvent->NewEvent)
-            {
-
-                AcEvent->Version = ++NewVersion;
-                Repository->AllEvents.push_back(std::make_pair(AccountId, AcEvent));
+        {                        
+            
+            AcEvent->Version = NewVersion++;
+            if(AcEvent->NewEvent){           
+                //Here i Create an Account and set AccountId
+                pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
+                pqxx::work wk(conn);
+                DaoAccount dac(conn, wk);
+                AccountId = dac.InsertAccountEvent(AcEvent->IdClient);                   
+                AcEvent->NewEvent = false;     
+                AllEvents.push_back(AcEvent);
             }
         }
 
         void Update(DepositeAccountEvent * AcEvent, EventHandler<DepositeAccountEvent> & Sender)
         {
             AccountMoney += AcEvent->Value;
-            if(AcEvent->NewEvent)
-            {              
-                AcEvent->Version = ++NewVersion;
-                Repository->AllEvents.push_back(std::make_pair(AccountId, AcEvent));
+            AcEvent->Version = NewVersion++;
+            if(AcEvent->NewEvent){           
+                AcEvent->NewEvent = false;     
+                AllEvents.push_back(AcEvent);
             }
         }
 
@@ -53,35 +59,30 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
                 std::cout << " Account Balance is lower than Withdraw value " << std::endl;
                 return;
             }
-
+            
             AccountMoney -= AcEvent->Value;
-            if(AcEvent->NewEvent)
-            {
-                    AcEvent->Version = ++NewVersion;
-                    Repository->AllEvents.push_back(std::make_pair(AccountId, AcEvent));
-            }            
+            AcEvent->Version = NewVersion++;
+            if(AcEvent->NewEvent){           
+                AcEvent->NewEvent = false;     
+                AllEvents.push_back(AcEvent);
+            }
 
         }
 
+        void Update(RemoveAccountEvent * AcEvent, EventHandler<RemoveAccountEvent> & Sender)
+        {
+
+        }
         void Update(PersistAccountEvent * AcEvent, EventHandler<PersistAccountEvent> & Sender)
         {
-            for(std::vector<std::pair<int, Event *> >::const_iterator it = Repository->AllEvents.begin(); it != Repository->AllEvents.end(); ++it)
-            {
-                    if(std::get<0>(*it) == AccountId && std::get<1>(*it)->NewEvent)
-                    {
-                        pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
-                        pqxx::work wk(conn);
-                        DaoAccount Dao(conn, wk);
-                        if(Dao.InsertAccountEvent(new DtoAccountEvent(AccountId, std::get<1>(*it)->Version,std::get<1>(*it)->EventType, std::get<1>(*it)->Value))) std::cout << std::get<0>(*it) << std::endl;
-                        
-                    }
-            }
+            Repository->Persist(AccountId, &AllEvents);
+            Repository->Summary(AccountId);
         }        
         
     public:
 
         Account(EventRepository * Repository) : Repository(Repository), AccountId(0), AccountMoney(0), OldVersion(0), NewVersion(0) {};
-        Account(int AccountId, EventRepository * Repository) : Repository(Repository), AccountId(AccountId), AccountMoney(0), OldVersion(0), NewVersion(0) {};
+        Account(int AccountId,  EventRepository * Repository) :  Repository(Repository), AccountId(AccountId), AccountMoney(0), OldVersion(0), NewVersion(0) {};
 };
 
 

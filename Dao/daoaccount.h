@@ -14,17 +14,16 @@ class DaoAccount{
     public:
         DaoAccount(pqxx::connection_base &conn, pqxx::transaction_base &tx) : conn(conn), tx(tx) {};
 
-        bool InsertAccountEvent(DtoAccountEvent * AccountEvent)
+        int InsertAccountEvent(int IdClient)
         {
-
-            conn.prepare("CreateAccount", "INSERT INTO event (accountid, version, eventtype, value ) VALUES ($1,$2,$3,$4) RETURNING accountid;");
-            pqxx::result res = tx.exec_prepared("CreateAccount", AccountEvent->getAccountId(), AccountEvent->getEventId(), AccountEvent->getEventType(), AccountEvent->getValue());
+            conn.prepare("CreateAccount", "INSERT INTO account (clientid) VALUES ($1) RETURNING accountid;");
+            pqxx::result res = tx.exec_prepared("CreateAccount", IdClient);
             if(res.size() > 0)
             {
                 tx.commit();
-                return true;
+                return res[0][0].as<int>();
             }else{
-                return false;
+                return 0;
             }
         };
 

@@ -3,16 +3,16 @@
 #include "../Dto/dtoaccountevent.h"
 #include "../Dto/dtoaccount.h"
 #include "../Dto/dtoaccountsummary.h"
-#include <pqxx/pqxx>
-#include <iostream>
+//#include <pqxx/pqxx>
+//#include <iostream>
 
 class DaoAccount{
 
     private:
-        pqxx::connection_base &conn;
-        pqxx::transaction_base &tx;
+  //      pqxx::connection_base &conn;
+   //     pqxx::transaction_base &tx;
     public:
-        DaoAccount(pqxx::connection_base &conn, pqxx::transaction_base &tx) : conn(conn), tx(tx) {};
+     /*   DaoAccount(pqxx::connection_base &conn, pqxx::transaction_base &tx) : conn(conn), tx(tx) {};
 
         int InsertAccountEvent(int IdClient)
         {
@@ -27,7 +27,7 @@ class DaoAccount{
             }
         };
 
-
+*/
 };
 
 

@@ -34,31 +34,31 @@ class Command
         void DoCreate(std::shared_ptr<Account> Ac, CreateAccountEvent * AcEvent)
         {
             CreateAccount.Attach(Ac);
-            CreateAccount.Notify(Ac, AcEvent);            
+            CreateAccount.Notify(Ac, AcEvent);
         }
 
         void DoRemove(std::shared_ptr<Account> Ac, RemoveAccountEvent * AcEvent){
 
             RemoveAccount.Attach(Ac);
-            RemoveAccount.Notify(Ac, AcEvent); 
+            RemoveAccount.Notify(Ac, AcEvent);
 
         }
-        
+
         void DoDeposite(std::shared_ptr<Account> Ac, DepositeAccountEvent * AcEvent)
         {
-         
+
             Deposite.Attach(Ac);
-            Deposite.Notify(Ac, AcEvent);                
+            Deposite.Notify(Ac, AcEvent);
         }
 
         void DoWithdraw(std::shared_ptr<Account> Ac, WithdrawAccountEvent * AcEvent)
         {
             Withdraw.Attach(Ac);
-            Withdraw.Notify(Ac, AcEvent);                
-        }        
+            Withdraw.Notify(Ac, AcEvent);
+        }
 
         void DoPersist(std::shared_ptr<Account> Ac, PersistAccountEvent * AcEvent)
-        {            
+        {
             Persistence.Attach(Ac);
             Persistence.Notify(Ac, AcEvent);
         }

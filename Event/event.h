@@ -1,6 +1,7 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 #include <ostream>
+#include <ctime>
 
 enum Type{CREATE, REMOVE, DEPOSITE, WITHDRAW};
 
@@ -20,7 +21,8 @@ class Event
 
     friend std::ostream &operator << (std::ostream &os, Event * ev)
     {
-        os << " Version: " << ev->Version << " - Event Type: " << (ev->EventType==CREATE?"Create":ev->EventType==DEPOSITE?"Deposite":"Withdraw") << " - Value: " << ev->Value;
+
+        os <<  " Version: " << ev->Version << " - Event Type: " << (ev->EventType==CREATE?"Create":ev->EventType==DEPOSITE?"Deposite":"Withdraw") << " - Value: " << ev->Value;
         return os;
     }
 };

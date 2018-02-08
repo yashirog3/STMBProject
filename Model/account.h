@@ -21,23 +21,23 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         int AccountId;
         double AccountMoney;
         int OldVersion;
-        int NewVersion;        
+        int NewVersion;
 
         EventRepository * Repository;
 
-        std::vector<Event *> AllEvents; 
-        
+        std::vector<Event *> AllEvents;
+
         void Update(CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender)
-        {                        
-            
+        {
+
             AcEvent->Version = NewVersion++;
-            if(AcEvent->NewEvent){           
+            if(AcEvent->NewEvent){
                 //Here i Create an Account and set AccountId
-                pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
-                pqxx::work wk(conn);
-                DaoAccount dac(conn, wk);
-                AccountId = dac.InsertAccountEvent(AcEvent->IdClient);                   
-                AcEvent->NewEvent = false;     
+//                pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
+ //               pqxx::work wk(conn);
+  //              DaoAccount dac(conn, wk);
+  //              AccountId = dac.InsertAccountEvent(AcEvent->IdClient);
+                AcEvent->NewEvent = false;
                 AllEvents.push_back(AcEvent);
             }
         }
@@ -46,8 +46,8 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         {
             AccountMoney += AcEvent->Value;
             AcEvent->Version = NewVersion++;
-            if(AcEvent->NewEvent){           
-                AcEvent->NewEvent = false;     
+            if(AcEvent->NewEvent){
+                AcEvent->NewEvent = false;
                 AllEvents.push_back(AcEvent);
             }
         }
@@ -59,11 +59,11 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
                 std::cout << " Account Balance is lower than Withdraw value " << std::endl;
                 return;
             }
-            
+
             AccountMoney -= AcEvent->Value;
             AcEvent->Version = NewVersion++;
-            if(AcEvent->NewEvent){           
-                AcEvent->NewEvent = false;     
+            if(AcEvent->NewEvent){
+                AcEvent->NewEvent = false;
                 AllEvents.push_back(AcEvent);
             }
 
@@ -76,9 +76,8 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         void Update(PersistAccountEvent * AcEvent, EventHandler<PersistAccountEvent> & Sender)
         {
             Repository->Persist(AccountId, &AllEvents);
-            Repository->Summary(AccountId);
-        }        
-        
+        }
+
     public:
 
         Account(EventRepository * Repository) : Repository(Repository), AccountId(0), AccountMoney(0), OldVersion(0), NewVersion(0) {};
@@ -86,4 +85,4 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
 };
 
 
-#endif              
+#endif

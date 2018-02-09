@@ -19,6 +19,7 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
     private:
 
         int AccountId;
+        int ClientId;
         double AccountMoney;
         int OldVersion;
         int NewVersion;
@@ -29,7 +30,7 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
 
         void Update(CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender)
         {
-
+            
             AcEvent->Version = NewVersion++;
             if(AcEvent->NewEvent){
                 //Here i Create an Account and set AccountId
@@ -75,13 +76,13 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         }
         void Update(PersistAccountEvent * AcEvent, EventHandler<PersistAccountEvent> & Sender)
         {
-            Repository->Persist(AccountId, &AllEvents);
+            Repository->Persist(ClientId, AccountId, &AllEvents);
         }
 
     public:
 
-        Account(EventRepository * Repository) : Repository(Repository), AccountId(0), AccountMoney(0), OldVersion(0), NewVersion(0) {};
-        Account(int AccountId,  EventRepository * Repository) :  Repository(Repository), AccountId(AccountId), AccountMoney(0), OldVersion(0), NewVersion(0) {};
+        Account(int ClientId, EventRepository * Repository) : ClientId(ClientId),Repository(Repository), AccountId(0), AccountMoney(0), OldVersion(0), NewVersion(0) {};
+        Account(int AccountId, int ClientId,  EventRepository * Repository) :  ClientId(ClientId),Repository(Repository), AccountId(AccountId), AccountMoney(0), OldVersion(0), NewVersion(0) {};
 };
 
 

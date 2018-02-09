@@ -5,7 +5,21 @@
 
 class Query{
 typedef std::vector<Event *> Events;
+typedef std::vector<std::pair<int, Events *> * > RepoEvents;
 public:
+
+    void SummaryAllAccounts(int IdClient, EventRepository * Repository){
+        RepoEvents * MyEvents = Repository->GetAllClientAccounts(IdClient);
+        if(MyEvents != NULL){
+
+
+        }else{
+
+            std::cout << "Events doesn't exists" << std::endl;
+        }
+    }
+
+
     void Summary(int AccountId, EventRepository * Repository){
         double Value = 0;
         std::pair<int, Events *> *  aux = Repository->FindEvents(AccountId);

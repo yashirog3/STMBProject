@@ -23,11 +23,8 @@ class Command
 {
     private:
 
-        DepositeAccountHandler Deposite;
-        WithdrawAccountHandler Withdraw;
-        CreateAccountHandler   CreateAccount;
-        RemoveAccountHandler   RemoveAccount;
-        PersistAccountHandler  Persistence;
+        DepositeAccountHandler Deposite; WithdrawAccountHandler Withdraw; CreateAccountHandler   CreateAccount;
+        RemoveAccountHandler   RemoveAccount; PersistAccountHandler  Persistence;
 
     public:
 
@@ -35,15 +32,12 @@ class Command
         {
             CreateAccount.Attach(Ac);
             CreateAccount.Notify(Ac, AcEvent);
-
-            Send An Email.
         }
 
-        void DoRemove(std::shared_ptr<Account> Ac, RemoveAccountEvent * AcEvent){
-
+        void DoRemove(std::shared_ptr<Account> Ac, RemoveAccountEvent * AcEvent)
+        {
             RemoveAccount.Attach(Ac);
             RemoveAccount.Notify(Ac, AcEvent);
-
         }
 
         void DoDeposite(std::shared_ptr<Account> Ac, DepositeAccountEvent * AcEvent)
@@ -64,6 +58,7 @@ class Command
             Persistence.Attach(Ac);
             Persistence.Notify(Ac, AcEvent);
         }
+               
 };
 
 #endif // COMMAND_H_

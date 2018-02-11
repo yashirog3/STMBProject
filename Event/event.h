@@ -2,6 +2,7 @@
 #define EVENT_H_
 #include <ostream>
 #include <ctime>
+#include <iomanip>
 
 enum Type
 {  
@@ -25,8 +26,7 @@ class Event
         os << \
         " Event: " << ev->Version << \
         " - Type: " << (ev->EventType==CREATE?"Create":ev->EventType==DEPOSITE?"Deposite":"Withdraw") << \
-        " - Value: " << ev->Value << \
-        " - New Event: " << (ev->NewEvent?"True":"False");
+        " - Value: R$ " << std::fixed << std::showpoint << std::setprecision(2) << std::setfill('0') <<  ev->Value;
         return os;
     }
 };

@@ -8,8 +8,6 @@
 #include "Event/event.h"
 
 
-
-
 class EventRepository{
 
 typedef std::vector<Event *> Events;
@@ -21,7 +19,8 @@ Repository AllClients;
 
 public:
 
-ClientAccounts * GetClientAccounts(int ClientId){
+ClientAccounts * GetClientAccounts(int ClientId)
+{
     for(Repository::const_iterator it = AllClients.begin(); it != AllClients.end(); ++it)
     {    
         if(std::get<0>(**it) == ClientId)

@@ -33,11 +33,6 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
             AcEvent->Version = NewVersion++;
             if(AcEvent->NewEvent)
             {
-                //Here i Create an Account and set AccountId
-//                pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
- //               pqxx::work wk(conn);
-  //              DaoAccount dac(conn, wk);
-  //              AccountId = dac.InsertAccountEvent(AcEvent->IdClient);
                 AcEvent->NewEvent = false;
                 AllEvents.push_back(AcEvent);
             }           

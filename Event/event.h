@@ -3,26 +3,30 @@
 #include <ostream>
 #include <ctime>
 
-enum Type{CREATE, REMOVE, DEPOSITE, WITHDRAW};
+enum Type
+{  
+    CREATE, 
+    REMOVE, 
+    DEPOSITE, 
+    WITHDRAW
+};
 
 class Event
 {
     public:
-        int IdClient; //Cliente of an account
-        int Version; //Version of an event
-        int EventType; //Type
-        double Value; //Value
-        bool NewEvent; //Is a new Event?
+        int Version; 
+        int EventType; 
+        double Value; 
+        bool NewEvent; 
 
-
-
-
-
-
+//Frinend funcion to send an formatted string with event data to stdout - std::cout << *Event << std::endl;
     friend std::ostream &operator << (std::ostream &os, Event * ev)
     {
-
-        os <<  " Version: " << ev->Version << " - Event Type: " << (ev->EventType==CREATE?"Create":ev->EventType==DEPOSITE?"Deposite":"Withdraw") << " - Value: " << ev->Value;
+        os << \
+        " Event: " << ev->Version << \
+        " - Type: " << (ev->EventType==CREATE?"Create":ev->EventType==DEPOSITE?"Deposite":"Withdraw") << \
+        " - Value: " << ev->Value << \
+        " - New Event: " << (ev->NewEvent?"True":"False");
         return os;
     }
 };

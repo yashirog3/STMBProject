@@ -2,9 +2,7 @@
 #define PERSISTACCOUNTEVENT_H_
 #include "event.h"
 
-class PersistAccountEvent : public Event{
-
-};
+class PersistAccountEvent : public Event{};
 
 
 #endif

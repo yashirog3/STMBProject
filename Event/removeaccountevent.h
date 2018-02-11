@@ -5,9 +5,8 @@
 class RemoveAccountEvent : public Event{
 
 public:
-    RemoveAccountEvent(int IdClient){
-
-        this->IdClient = IdClient;
+    RemoveAccountEvent(){
+        
         this->Version = 0;
         this->EventType = REMOVE;
         this->Value = 0;        

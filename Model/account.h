@@ -25,14 +25,14 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
         int NewVersion;
 
         EventRepository * Repository;
-
         std::vector<Event *> AllEvents;
 
         void Update(CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender)
         {
             
             AcEvent->Version = NewVersion++;
-            if(AcEvent->NewEvent){
+            if(AcEvent->NewEvent)
+            {
                 //Here i Create an Account and set AccountId
 //                pqxx::connection conn("user = stoneuser password = stonepassword host = localhost dbname = stonedb");
  //               pqxx::work wk(conn);
@@ -40,14 +40,15 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
   //              AccountId = dac.InsertAccountEvent(AcEvent->IdClient);
                 AcEvent->NewEvent = false;
                 AllEvents.push_back(AcEvent);
-            }
+            }           
         }
 
         void Update(DepositeAccountEvent * AcEvent, EventHandler<DepositeAccountEvent> & Sender)
         {
             AccountMoney += AcEvent->Value;
             AcEvent->Version = NewVersion++;
-            if(AcEvent->NewEvent){
+            if(AcEvent->NewEvent)
+            {
                 AcEvent->NewEvent = false;
                 AllEvents.push_back(AcEvent);
             }
@@ -75,7 +76,7 @@ public EventHandler<CreateAccountEvent>::Listener, public EventHandler<PersistAc
 
         }
         void Update(PersistAccountEvent * AcEvent, EventHandler<PersistAccountEvent> & Sender)
-        {
+        {                       
             Repository->Persist(ClientId, AccountId, &AllEvents);
         }
 

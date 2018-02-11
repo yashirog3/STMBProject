@@ -35,6 +35,8 @@ class Command
         {
             CreateAccount.Attach(Ac);
             CreateAccount.Notify(Ac, AcEvent);
+
+            Send An Email.
         }
 
         void DoRemove(std::shared_ptr<Account> Ac, RemoveAccountEvent * AcEvent){

@@ -2,15 +2,15 @@
 #define CREATEACCOUNTEVENT_H_
 #include "event.h"
 
-class CreateAccountEvent : public Event{
+class CreateAccountEvent : public Event
+{
 
 public:
-    CreateAccountEvent()
+    CreateAccountEvent(int Version = 0)
     {
-        this->Version = 0;
+        this->Version = Version;
         this->EventType = CREATE;
         this->Value = 0;        
-        this->NewEvent = true;
     };
 };
 

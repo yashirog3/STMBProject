@@ -59,13 +59,14 @@ void ShowEvents(int IdClient, int AccountId, EventRepository * Repository)
     Accounts * Caux = Repository->GetAccountEvents(IdClient, AccountId);
     if(Caux != NULL)
     { 
-            for(Events::const_iterator jt = std::get<1>(*Caux)->begin(); jt != std::get<1>(*Caux)->end(); ++jt)
-            {
-                std::cout << (*jt) << std::endl;
-            }
+        for(Events::const_iterator jt = std::get<1>(*Caux)->begin(); jt != std::get<1>(*Caux)->end(); ++jt)
+        {
+            std::cout << (*jt) << std::endl;
+        }
     };
 
 }
+
 
 void SummaryAccount(int IdClient, int AccountId, EventRepository * Repository)
 {
@@ -79,10 +80,8 @@ void SummaryAccount(int IdClient, int AccountId, EventRepository * Repository)
                 std::cout.imbue(mylocale);
                 std::cout << "Transactions: " << std::endl << std::endl;
             for(Events::const_iterator jt = std::get<1>(*Caux)->begin(); jt != std::get<1>(*Caux)->end(); ++jt)
-            {
-        
-                std::cout << *jt << std::endl;
-                
+            {        
+                std::cout << *jt << std::endl;                
                 switch((*jt)->EventType)
                 {                    
                     case WITHDRAW:

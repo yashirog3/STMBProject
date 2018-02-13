@@ -7,7 +7,6 @@
 #include <vector>
 #include "Event/event.h"
 
-
 class EventRepository{
 
 typedef std::vector<Event *> Events;
@@ -19,8 +18,7 @@ Repository AllClients;
 
 public:
 
-ClientAccounts * GetClientAccounts(int ClientId)
-{
+ClientAccounts * GetClientAccounts(int ClientId){
     for(Repository::const_iterator it = AllClients.begin(); it != AllClients.end(); ++it)
     {    
         if(std::get<0>(**it) == ClientId)
@@ -59,12 +57,12 @@ void AddEvents(Events * ac, Events * ev)
     }    
 }
 
-void Persist(int IdClient, int IdAccount, Events * ev)
-{
-    ClientAccounts * Caux = GetClientAccounts(IdClient);
+void Persist(int ClientId, int AccountId, Events * ev)
+{ 
+    ClientAccounts * Caux = GetClientAccounts(ClientId);
     if(Caux != NULL)
     { 
-        Accounts * Aaux = GetAccountEvents(IdClient, IdAccount); 
+        Accounts * Aaux = GetAccountEvents(ClientId, AccountId); 
         if(Aaux != NULL) //Account Exists
         { 
             AddEvents(std::get<1>(*Aaux), ev);                    
@@ -73,17 +71,17 @@ void Persist(int IdClient, int IdAccount, Events * ev)
         {            
             Events * Eaux = new Events();
             AddEvents(Eaux, ev);
-            std::get<1>(*Caux)->push_back(new Accounts(IdAccount, Eaux));            
+            std::get<1>(*Caux)->push_back(new Accounts(AccountId, Eaux));            
         }
     }
     else//Account Doesn't Exists and Client have not accounts
     {         
             Events * Eaux = new Events();  
             AddEvents(Eaux, ev);     
-            Accounts * Aaux = new Accounts(IdAccount, Eaux); 
+            Accounts * Aaux = new Accounts(AccountId, Eaux); 
             AccountEvents * Aevn = new AccountEvents();
             Aevn->push_back(Aaux);
-            Caux = new ClientAccounts(IdClient, Aevn);
+            Caux = new ClientAccounts(ClientId, Aevn);
             AllClients.push_back(Caux);
         }
     }

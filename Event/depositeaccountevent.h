@@ -5,12 +5,11 @@
 class DepositeAccountEvent : public Event
 {
   public:
-    DepositeAccountEvent(double Value)
+    DepositeAccountEvent(double Value, int Version = 0)
     {
-        this->Version = 0;
+        this->Version = Version;
         this->EventType = DEPOSITE;
         this->Value = Value;
-        this->NewEvent = true;
     };
 };
 

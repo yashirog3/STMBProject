@@ -19,43 +19,46 @@ class Command
 {
     private:
 
-        DepositeAccountHandler Deposite; WithdrawAccountHandler Withdraw; CreateAccountHandler   CreateAccount;
-        UndoAccountHandler UndoAccount; PersistAccountHandler  Persistence;
-
+        DepositeAccountHandler Deposite; 
+        WithdrawAccountHandler Withdraw; 
+        CreateAccountHandler   CreateAccount;
+        UndoAccountHandler UndoAccount; 
+        PersistAccountHandler  Persistence;    
+    
     public:
-        
+
         //Create an New Account
-        void DoCreate(std::shared_ptr<Account> Ac, CreateAccountEvent * AcEvent)
+        void DoCreate(std::shared_ptr<Account> Ac)
         {
             CreateAccount.Attach(Ac);
-            CreateAccount.Notify(Ac, AcEvent);
+            CreateAccount.Notify(Ac, new CreateAccountEvent());
         }
         
         //Create an deposit event
-        void DoDeposite(std::shared_ptr<Account> Ac, DepositeAccountEvent * AcEvent)
+        void DoDeposite(std::shared_ptr<Account> Ac, double Money)
         {
             Deposite.Attach(Ac);
-            Deposite.Notify(Ac, AcEvent);
+            Deposite.Notify(Ac, new DepositeAccountEvent(Money));
         }
         
         //Create an withdraw event
-        void DoWithdraw(std::shared_ptr<Account> Ac, WithdrawAccountEvent * AcEvent)
+        void DoWithdraw(std::shared_ptr<Account> Ac, double Money)
         {
             Withdraw.Attach(Ac);
-            Withdraw.Notify(Ac, AcEvent);
+            Withdraw.Notify(Ac, new WithdrawAccountEvent(Money));
         }
 
         //Persist In Memory
-        void DoPersist(std::shared_ptr<Account> Ac, PersistAccountEvent * AcEvent)
+        void DoPersist(std::shared_ptr<Account> Ac)
         {
             Persistence.Attach(Ac);
-            Persistence.Notify(Ac, AcEvent);
+            Persistence.Notify(Ac, new PersistAccountEvent());
         }
 
-        void DoUndo(std::shared_ptr<Account> Ac, UndoAccountEvent * AcEvent){
+        void DoUndo(std::shared_ptr<Account> Ac){
 
             UndoAccount.Attach(Ac);
-            UndoAccount.Notify(Ac, AcEvent);
+            UndoAccount.Notify(Ac, new UndoAccountEvent());
 
         }
                

@@ -26,6 +26,7 @@ ClientAccounts * GetClientAccounts(int ClientId){
             return new ClientAccounts(**it);
         }
     }
+
     return NULL;
 }
 

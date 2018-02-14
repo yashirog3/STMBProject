@@ -8,6 +8,8 @@
 #include "../Handler/createaccounthandler.h"
 #include "../Handler/depositeaccounthandler.h"
 #include "../Handler/withdrawaccounthandler.h"
+#include "../Handler/persistaccounthandler.h"
+#include "../Handler/undoaccounthandler.h"
 #include "../Handler/eventhandler.h"
 #include "../eventrepository.h"
 #include "../Dao/daoaccount.h"
@@ -22,11 +24,11 @@ class Account :
 
     private:
 
-        int AccountId;
-        int ClientId;
-        double AccountMoney;
-        int OldVersion;
-        int NewVersion;
+        int AccountId = 0;
+        int ClientId = 0;
+        double AccountMoney = 0;
+        int OldVersion = 0;
+        int NewVersion = 0;
 
         EventRepository * Repository;
         DaoAccount * DaoAc;
@@ -90,12 +92,13 @@ class Account :
 
     public:
 
-        //Create a single account
-        Account(int ClientId, EventRepository * Repository, DaoAccount * DaoAc) : ClientId(ClientId),Repository(Repository), DaoAc(DaoAc), AccountId(0), AccountMoney(0), OldVersion(0), NewVersion(0) {};
+        Account() : AccountId(0) {};
+
+        Account(int ClientId, EventRepository * Repository, DaoAccount * DaoAc) : ClientId(ClientId),Repository(Repository), DaoAc(DaoAc) {};
 
 
         //Re-create an account based on In Memory Repository or Database
-        Account(int AccountId, int ClientId,  EventRepository * Repository, DaoAccount * DaoAc) : ClientId(ClientId),Repository(Repository), DaoAc(DaoAc), AccountId(AccountId), AccountMoney(0), OldVersion(0), NewVersion(0) 
+        Account(int ClientId, int AccountId,  EventRepository * Repository, DaoAccount * DaoAc) : ClientId(ClientId),Repository(Repository), DaoAc(DaoAc), AccountId(AccountId)
         {
             std::pair<int, std::vector<Event *> *> * MyAccount = Repository->GetAccountEvents(ClientId, AccountId);
             if(MyAccount != NULL)
@@ -106,8 +109,7 @@ class Account :
                 }
             }
             else
-            {
-                
+            {                
                 pqxx::result res = DaoAc->GetAccountEvents(AccountId);
                 if(res.size() > 0)
                 {    
@@ -116,6 +118,7 @@ class Account :
                     {
                         switch(res[i][1].as<int>())
                         {
+
                             case CREATE:
                                 MyEvents.push_back(new CreateAccountEvent(res[i][0].as<int>()));
                             break;

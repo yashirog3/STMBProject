@@ -6,12 +6,14 @@ class WithdrawAccountEvent : public Event
 {
   public:
 
-    WithdrawAccountEvent(double Value, int Version = 0)
+    WithdrawAccountEvent(double Value, int Version = 0, bool NewEvent = true)
     {
         this->Version = Version;
         this->Value = Value;
-        this->EventType = WITHDRAW;      
+        this->EventType = WITHDRAW; 
+        this->NewEvent = NewEvent;     
     };
+
 
 };
 

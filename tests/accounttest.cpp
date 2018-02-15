@@ -1,12 +1,19 @@
-#include "../command.h"
 #include "../Model/account.h"
+#include "accountdaomock.h"
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+using ::testing::AtLeast
+
+TEST(InterfaceTest, CreateInterface){
+
+    
+
+}
 
 TEST(AccountTest, CreateAccountTest){
 
-    Command c;
-    std::shared_ptr<Account> Ac(new Account());
-    EXPECT_NO_THROW();    
+  
 
 };  
 

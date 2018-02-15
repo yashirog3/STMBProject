@@ -23,43 +23,46 @@ class Command
         WithdrawAccountHandler Withdraw; 
         CreateAccountHandler   CreateAccount;
         UndoAccountHandler UndoAccount; 
-        PersistAccountHandler  Persistence;    
+        PersistAccountHandler  Persistence;        
     
+        std::shared_ptr<Account> Ac;
+
     public:
 
+        Command(Account Ac) : Ac(std::make_shared<Account>(Ac)) {} ;
+
         //Create an New Account
-        void DoCreate(std::shared_ptr<Account> Ac)
+        void DoCreate(CreateAccountEvent * AcEvent)
         {
             CreateAccount.Attach(Ac);
-            CreateAccount.Notify(Ac, new CreateAccountEvent());
+            CreateAccount.Notify(Ac, AcEvent);
         }
         
         //Create an deposit event
-        void DoDeposite(std::shared_ptr<Account> Ac, double Money)
+        void DoDeposite(DepositeAccountEvent * AcEvent)
         {
             Deposite.Attach(Ac);
-            Deposite.Notify(Ac, new DepositeAccountEvent(Money));
+            Deposite.Notify(Ac, AcEvent);
         }
         
         //Create an withdraw event
-        void DoWithdraw(std::shared_ptr<Account> Ac, double Money)
+        void DoWithdraw(WithdrawAccountEvent * AcEvent)
         {
             Withdraw.Attach(Ac);
-            Withdraw.Notify(Ac, new WithdrawAccountEvent(Money));
+            Withdraw.Notify(Ac, AcEvent);
         }
 
         //Persist In Memory
-        void DoPersist(std::shared_ptr<Account> Ac)
+        void DoPersist()
         {
             Persistence.Attach(Ac);
             Persistence.Notify(Ac, new PersistAccountEvent());
         }
 
-        void DoUndo(std::shared_ptr<Account> Ac){
-
+        void DoUndo()
+        {
             UndoAccount.Attach(Ac);
             UndoAccount.Notify(Ac, new UndoAccountEvent());
-
         }
                
 };

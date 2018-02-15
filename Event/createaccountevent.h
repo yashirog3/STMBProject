@@ -6,11 +6,12 @@ class CreateAccountEvent : public Event
 {
 
 public:
-    CreateAccountEvent(int Version = 0)
+    CreateAccountEvent(int Version = 0, bool NewEvent = true)
     {
         this->Version = Version;
         this->EventType = CREATE;
         this->Value = 0;        
+        this->NewEvent = NewEvent;
     };
 };
 

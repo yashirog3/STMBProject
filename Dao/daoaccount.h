@@ -1,39 +1,86 @@
 #ifndef DAOACCOUNT_H_
 #define DAOACCOUNT_H_
-#include <pqxx/pqxx>
-#include <iostream>
 
-class DaoAccount{
+#include "idaoaccount.h"
+#include <pqxx/pqxx>
+
+class DaoAccount : public IDaoAccount {
+
 
     private:
+
         pqxx::connection_base &conn;
         pqxx::transaction_base &tx;
+
     public:        
+
         DaoAccount(pqxx::connection_base &conn, pqxx::transaction_base &tx) : conn(conn), tx(tx) {};
 
-        //Get All Events from an account
-        pqxx::result GetAccountEvents(int AccountId)
+        ClientAccounts * GetClientAccounts(int ClientId)
         {
-            try
-            {  
-                conn.prepare("CheckAccount", "SELECT version, eventtype, value  FROM event WHERE accountid = $1;");
-                pqxx::result res = tx.exec_prepared("CheckAccount", AccountId);  
-                return res;  
-            }
-            catch(std::exception &e)
+            conn.prepare("GetClientAccounts", "SELECT accountid FROM account WHERE clientid = $1 ORDER BY accountid ASC;");
+            pqxx::result res = tx.exec_prepared("GetClientAccounts", ClientId);
+            if(res.size() > 0)
             {
-                throw;
-            }            
+                ClientAccounts * Caux = new ClientAccounts(ClientId, new AccountEvents());
+
+                for(int i = 0; i < res.size(); i++)
+                {
+                    std::get<1>(*Caux)->push_back(GetAccountEvents(ClientId, res[i][0].as<int>()));
+                }
+                    return Caux;                       
+            }
+                return NULL;          
+        }
+
+
+        Accounts * GetAccountEvents(int ClientId, int AccountId)
+        {
+
+            conn.prepare("GetAccountEvents", 
+                        "SELECT e.version, e.eventtype, e.value "
+                        "FROM event e JOIN account a ON e.accountid = a.accountid "
+                        "WHERE e.accountid = $1 AND a.clientid=$2;");
+
+            pqxx::result res = tx.exec_prepared("GetAccountEvents", AccountId, ClientId);
+            if(res.size() > 0)
+            {
+                Events * Aux = new Events();
+                for(int i = 0; i < res.size(); i++)
+                {                                                
+                    switch(res[i][1].as<int>())
+                    {
+                        case CREATE:
+                            Aux->push_back(new CreateAccountEvent(res[i][0].as<int>(), false));
+                        break;
+                        case DEPOSITE:
+                            Aux->push_back(new DepositeAccountEvent(res[i][2].as<double>(), res[i][0].as<int>(), false));
+                        break;
+                        case WITHDRAW:
+                            Aux->push_back(new WithdrawAccountEvent(res[i][2].as<double>(), res[i][0].as<int>(), false));
+                        break;
+
+                        default:
+                        break;
+
+                    }       
+
+                 }   
+
+                return new Accounts(AccountId, Aux);
+            }         
+            return NULL;
 
         }
 
+
     //Detect inconsistence on events
-    bool CheckVersion(int AccountId, int OldVersion, int NewVersion)
+    bool CheckVersion(int ClientId, int AccountId, int OldVersion)
     {
         try
         {        
-            conn.prepare("CheckVersion", "UPDATE account SET currentversion = $1 WHERE accountid = $2 and currentversion = $3;");
-            pqxx::result res = tx.exec_prepared("CheckVersion", NewVersion, AccountId, OldVersion);  
+            conn.prepare("CheckVersion", "UPDATE account SET currentversion = $1 WHERE accountid = $2 AND clientid = $3 currentversion = $4;");
+            pqxx::result res = tx.exec_prepared("CheckVersion", OldVersion+1, AccountId, ClientId, OldVersion);  
             tx.commit();   
             return true;
         }
@@ -63,11 +110,11 @@ class DaoAccount{
     }
 
     //Persist Events on Database
-    void Persist(int AccountId, std::vector<Event *> * AllEvents, int OldVersion, int NewVersion)
+    void Persist(int ClientId, int AccountId, Events * AllEvents, int OldVersion)
     {
         try
         {  
-            if(!CheckVersion(AccountId, OldVersion, NewVersion))
+            if(!CheckVersion(ClientId, AccountId, OldVersion))
             {
                 std::cout << "We Detect an Inconsistence on your account. Your Account could not be changed" << std::endl;
                 return;                     

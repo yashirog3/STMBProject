@@ -1,26 +1,30 @@
 #include <iostream>
-#include "Model/client.h"
+#include "interface.h"
+#include "Dao/eventrepository.h"
 #include <pqxx/pqxx>
+#include <thread>
 
 using namespace std;
 
-EventRepository Repository;
-Query Queries;
+EventRepository DaoAc;
 
 int main(int argc, char ** argv)
 {  
 
-    pqxx::connection conn("user=stoneuser"" password=stonepassword"" dbname=stonedb"" host=localhost");
-    pqxx::work tx(conn);
-    DaoAccount DaoAc(conn, tx);    
-
-    Client Cli1(1);
-//    Cli1.CreateAccount(&Repository, &DaoAc);
-
-    Cli1.Save();
-
-    Cli1.GetAccount(4, &Repository, &DaoAc);
-    Cli1.SummaryAccount(20, &DaoAc);  
+    Interface Client1(1, &DaoAc);   
+    Client1.CreateAccount();
+    Client1.Deposite(100);    
+    Client1.Deposite(1000);
+    Client1.Withdraw(100);
+    Client1.Save();
+    Client1.CreateAccount();
+    Client1.Deposite(220);    
+    Client1.Deposite(1050);
+    Client1.Withdraw(100);
+    Client1.Save();
+    Client1.SummaryAllAccounts();
+    Interface Client2(2, &DaoAc);
+    Client2.Save();
     return 0;
 }
 

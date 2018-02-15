@@ -30,6 +30,7 @@ class Command
     public:
 
         Command(Account Ac) : Ac(std::make_shared<Account>(Ac)) {} ;
+        ~Command() { delete(Ac.get());};
 
         //Create an New Account
         void DoCreate(CreateAccountEvent * AcEvent)

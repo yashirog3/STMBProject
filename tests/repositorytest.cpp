@@ -6,16 +6,17 @@
 using ::testing::AtLeast;
 using ::testing::Mock;
 
-RepositoryTest * DaoAc = new RepositoryTest();  
+RepositoryTest * DaoAc = new RepositoryTest();
 Interface * Client1 = new Interface(1, DaoAc);
+
+
 
 TEST(InterfaceTest, CreateAccountTest)
 {   
+   EXPECT_CALL(*DaoAc, PersistAccount(1))
+            .Times(AtLeast(1));
+   Client1->CreateAccount();
 
-    EXPECT_CALL(*DaoAc, PersistAccount(1))
-        .Times(AtLeast(1));
-    
-    Client1->CreateAccount();
 }
 
 
@@ -38,12 +39,10 @@ TEST(InterfaceTest, WithdrawTest)
 
 
 TEST(InterfaceTest, SaveTest)
-{
-    
+{    
     EXPECT_CALL(*DaoAc, GetAccountEvents(1, 1))
             .Times(AtLeast(1));    
     Client1->Save();
-
 
 }
 

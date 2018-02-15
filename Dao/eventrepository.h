@@ -13,10 +13,13 @@ static unsigned int seed = 0;
 class EventRepository : public IDaoAccount{
 
 typedef std::vector<ClientAccounts *> Repository;
+
 Repository AllClients;
 
 
 public:
+
+~EventRepository() { AllClients.clear();
 
 ClientAccounts * GetClientAccounts(int ClientId){
     for(Repository::const_iterator it = AllClients.begin(); it != AllClients.end(); ++it)

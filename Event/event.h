@@ -12,7 +12,6 @@ enum Type
 class Event
 {
     public:
-        virtual ~Event() {};
         int Version; 
         int EventType;
         double Value; 

@@ -11,7 +11,7 @@ class EventHandler{
     public:
         class Listener{
            public:
-                virtual ~Listener(){};
+                virtual ~Listener(){ };
                 virtual void Update(T *, EventHandler& Sender) {};
             } ;
     private:

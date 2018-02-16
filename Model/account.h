@@ -12,13 +12,9 @@
 #include "../Handler/undoaccounthandler.h"
 #include "../Handler/eventhandler.h"
 #include "../Dao/daoaccount.h"
+#include "iaccount.h"
 
-class Account : 
-                public EventHandler<DepositeAccountEvent>::Listener, 
-                public EventHandler<WithdrawAccountEvent>::Listener,
-                public EventHandler<CreateAccountEvent>::Listener, 
-                public EventHandler<PersistAccountEvent>::Listener, 
-                public EventHandler<UndoAccountEvent>::Listener 
+class Account :  public IAccount
 {
     private:
 

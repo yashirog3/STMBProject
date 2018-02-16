@@ -1,21 +1,33 @@
-#include "../Model/account.h"
-#include "accountdaomock.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include "accountmock.h"
+#include "repositorytest.h"
+#include "../interface.h"
+#include "../command.h"
+#include "../Event/createaccountevent.h"
 
-using ::testing::AtLeast
+using ::testing::AtLeast;
+using ::testing::_;
+using ::testing::Mock;
 
-TEST(InterfaceTest, CreateInterface){
+RepositoryTest Test;
+Interface Cli1(1, &Test);
+AccountMock Ac;
+Command * Com = new Command(Ac);
 
-    
-
-}
 
 TEST(AccountTest, CreateAccountTest){
 
-  
+    EXPECT_CALL(Ac, Update(_,_))
+        .Times(1);
 
-};  
+    Cli1.CreateAccount();
+
+}
+
+
+
+
 
 
 int main(int argc, char ** argv){

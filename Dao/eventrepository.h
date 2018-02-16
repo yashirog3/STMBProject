@@ -19,9 +19,9 @@ Repository AllClients;
 
 public:
 
-~EventRepository() { AllClients.clear();
+ClientAccounts * GetClientAccounts(int ClientId)
+{
 
-ClientAccounts * GetClientAccounts(int ClientId){
     for(Repository::const_iterator it = AllClients.begin(); it != AllClients.end(); ++it)
     {    
         if(std::get<0>(**it) == ClientId)
@@ -66,7 +66,8 @@ bool CheckVersion(int ClientId, int AccountId, int OldVersion)
     return false;
 }
 
-int PersistAccount(int ClientId){
+int PersistAccount(int ClientId)
+{
 
     ClientAccounts * Aaux = GetClientAccounts(ClientId);
     if(Aaux != NULL)

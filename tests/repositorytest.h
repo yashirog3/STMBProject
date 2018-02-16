@@ -7,6 +7,11 @@
 
 class RepositoryTest : public IDaoAccount {
 
+ private:
+    typedef std::vector<ClientAccounts *> Repository;
+
+    Repository AllClients;
+
  public:
 
       MOCK_METHOD1(GetClientAccounts, ClientAccounts*(int ClientId));

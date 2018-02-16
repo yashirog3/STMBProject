@@ -11,7 +11,7 @@
 class IDaoAccount{
     public:        
 
-        virtual ~IDaoAccount() {};
+        virtual ~IDaoAccount() { };
         virtual ClientAccounts * GetClientAccounts(int ClientId)  = 0;
         virtual Accounts * GetAccountEvents(int ClientId, int AccountId) = 0;
         virtual bool CheckVersion(int ClientId, int AccountId, int OldVersion) = 0;

@@ -22,36 +22,39 @@ list(APPEND DIRS
 include_directories(${DIRS})
 add_executable(main main.cpp)
 add_definitions(-std=gnu++11 -Wall)
-add_library(lpqxx main.cpp)
-add_library(lpq main.cpp)
+target_link_libraries(main pqxx pq pthread)
 
-add_executable(repositorytest ${GTEST_DIR}/repositorytest.cpp)
-add_executable(accounttest ${GTEST_DIR}/accounttest.cpp)
+add_executable(unittest ${GTEST_DIR}/unittest.cpp)
+add_executable(integrationtest ${GTEST_DIR}/integrationtest.cpp)
 include_directories(${GTEST_DIR}/include)
 
-target_link_libraries(repositorytest ${GTEST_DIR}/lib/libgtest.so)
-target_link_libraries(repositorytest ${GTEST_DIR}/lib/libgtest_main.so)
-target_link_libraries(repositorytest ${GTEST_DIR}/lib/libgmock.so)
-target_link_libraries(repositorytest ${GTEST_DIR}/lib/libgmock_main.so)
-target_link_libraries(repositorytest pthread )
+target_link_libraries(integrationtest ${GTEST_DIR}/lib/libgtest.so)
+target_link_libraries(integrationtest ${GTEST_DIR}/lib/libgtest_main.so)
+target_link_libraries(integrationtest ${GTEST_DIR}/lib/libgmock.so)
+target_link_libraries(integrationtest ${GTEST_DIR}/lib/libgmock_main.so)
+target_link_libraries(integrationtest pthread )
 
-target_link_libraries(accounttest ${GTEST_DIR}/lib/libgtest.so)
-target_link_libraries(accounttest ${GTEST_DIR}/lib/libgtest_main.so)
-target_link_libraries(accounttest ${GTEST_DIR}/lib/libgmock.so)
-target_link_libraries(accounttest ${GTEST_DIR}/lib/libgmock_main.so)
-target_link_libraries(accounttest pthread )
+target_link_libraries(unittest ${GTEST_DIR}/lib/libgtest.so)
+target_link_libraries(unittest ${GTEST_DIR}/lib/libgtest_main.so)
+target_link_libraries(unittest ${GTEST_DIR}/lib/libgmock.so)
+target_link_libraries(unittest ${GTEST_DIR}/lib/libgmock_main.so)
+target_link_libraries(unittest pthread )
+
 
 enable_testing()
 
+
 add_test(
 
-    NAME repositorytest
-    COMMAND repositorytest
+    NAME unittest
+    COMMAND unittest
 )
 
 add_test(
 
-    NAME accounttest
-    COMMAND accounttest
+    NAME integrationtest
+    COMMAND integrationtest
 )
+
+
 

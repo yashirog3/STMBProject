@@ -1,0 +1,212 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/giecht/Área de Trabalho/STMBProject/Dao/eventrepository.h
+algorithm
+-
+iostream
+-
+map
+-
+vector
+-
+../Event/event.h
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+idaoaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+userdefs.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/userdefs.h
+
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+iostream
+-
+../Event/createaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/createaccountevent.h
+../Event/depositeaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
+../Event/withdrawaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
+userdefs.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/userdefs.h
+vector
+-
+map
+-
+
+/home/giecht/Área de Trabalho/STMBProject/Dao/userdefs.h
+vector
+-
+map
+-
+
+/home/giecht/Área de Trabalho/STMBProject/Event/createaccountevent.h
+event.h
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+
+/home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
+event.h
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+ostream
+-
+
+/home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
+event.h
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+
+/home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
+event.h
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+
+/home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
+event.h
+/home/giecht/Área de Trabalho/STMBProject/Event/event.h
+
+/home/giecht/Área de Trabalho/STMBProject/Handler/createaccounthandler.h
+../Event/createaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/createaccountevent.h
+eventhandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+
+/home/giecht/Área de Trabalho/STMBProject/Handler/depositeaccounthandler.h
+../Event/depositeaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
+eventhandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+vector
+-
+algorithm
+-
+memory
+-
+
+/home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
+../Event/persistaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
+eventhandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+
+/home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
+../Event/undoaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
+eventhandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+
+/home/giecht/Área de Trabalho/STMBProject/Handler/withdrawaccounthandler.h
+../Event/withdrawaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
+eventhandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+
+/home/giecht/Área de Trabalho/STMBProject/Model/account.h
+iostream
+-
+algorithm
+-
+vector
+-
+map
+-
+../Dao/idaoaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+iaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Model/iaccount.h
+
+/home/giecht/Área de Trabalho/STMBProject/Model/iaccount.h
+../Handler/createaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/createaccounthandler.h
+../Handler/depositeaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/depositeaccounthandler.h
+../Handler/withdrawaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/withdrawaccounthandler.h
+../Handler/persistaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
+../Handler/undoaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
+../Handler/eventhandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
+../Dao/idaoaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+
+/home/giecht/Área de Trabalho/STMBProject/command.h
+Handler/depositeaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/depositeaccounthandler.h
+Handler/withdrawaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/withdrawaccounthandler.h
+Handler/createaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/createaccounthandler.h
+Event/createaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/createaccountevent.h
+Event/depositeaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
+Event/withdrawaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
+Event/persistaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
+Event/undoaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
+Handler/undoaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
+Model/account.h
+/home/giecht/Área de Trabalho/STMBProject/Model/account.h
+Dao/idaoaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+icommand.h
+/home/giecht/Área de Trabalho/STMBProject/icommand.h
+Handler/persistaccounthandler.h
+/home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
+algorithm
+-
+vector
+-
+map
+-
+
+/home/giecht/Área de Trabalho/STMBProject/icommand.h
+Dao/idaoaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+Event/createaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/createaccountevent.h
+Event/depositeaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
+Event/withdrawaccountevent.h
+/home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
+
+/home/giecht/Área de Trabalho/STMBProject/interface.h
+iostream
+-
+Model/account.h
+/home/giecht/Área de Trabalho/STMBProject/Model/account.h
+command.h
+/home/giecht/Área de Trabalho/STMBProject/command.h
+query.h
+/home/giecht/Área de Trabalho/STMBProject/query.h
+
+/home/giecht/Área de Trabalho/STMBProject/main.cpp
+iostream
+-
+interface.h
+/home/giecht/Área de Trabalho/STMBProject/interface.h
+Dao/eventrepository.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/eventrepository.h
+pqxx/pqxx
+-
+
+/home/giecht/Área de Trabalho/STMBProject/query.h
+Model/account.h
+/home/giecht/Área de Trabalho/STMBProject/Model/account.h
+Dao/idaoaccount.h
+/home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
+iomanip
+-
+iostream
+-
+

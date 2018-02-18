@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include "../Event/event.h"
+#include "idaoaccount.h"
 #include "userdefs.h"
 
 static unsigned int seed = 0;
@@ -13,135 +14,105 @@ static unsigned int seed = 0;
 class EventRepository : public IDaoAccount{
 
 typedef std::vector<ClientAccounts *> Repository;
-
 Repository AllClients;
 
 
 public:
 
-ClientAccounts * GetClientAccounts(int ClientId)
-{
-
-    for(Repository::const_iterator it = AllClients.begin(); it != AllClients.end(); ++it)
-    {    
-        if(std::get<0>(**it) == ClientId)
-        {
-            return new ClientAccounts(**it);
-        }
-    }
-    return NULL;
-}
-
-Accounts * GetAccountEvents(int ClientId, int AccountId)
-{
-    ClientAccounts * aux = GetClientAccounts(ClientId);
-    if(aux != NULL)
+    ClientAccounts * GetClientAccounts(int ClientId)
     {
-        for(AccountEvents::const_iterator it = std::get<1>(*aux)->begin(); it != std::get<1>(*aux)->end(); ++it)
-        {
-            if(std::get<0>(**it) == AccountId)
+
+        for(Repository::const_iterator it = AllClients.begin(); it != AllClients.end(); ++it)
+        {    
+            if(std::get<0>(**it) == ClientId)
             {
-                return new std::pair<int, Events *>(**it);
+                return new ClientAccounts(**it);
             }
         }
+        return NULL;
     }
 
-    return NULL;
-}
-
-bool CheckVersion(int ClientId, int AccountId, int NewVersion)
-{
-    Accounts * Aux = GetAccountEvents(ClientId, AccountId);
-    if(Aux != NULL)
+    Accounts * GetAccountEvents(int ClientId, int AccountId)
     {
-        for(Events::const_iterator it = std::get<1>(*Aux)->begin(); it != std::get<1>(*Aux)->end(); ++it)
+        ClientAccounts * aux = GetClientAccounts(ClientId);
+        if(aux != NULL)
         {
-            if((*it)->Version == NewVersion)
-                return false;
+            for(AccountEvents::const_iterator it = std::get<1>(*aux)->begin(); it != std::get<1>(*aux)->end(); ++it)
+            {
+                if(std::get<0>(**it) == AccountId)
+                {
+                    return new std::pair<int, Events *>(**it);
+                }
+            }
+        }
+
+        return NULL;
+    }
+
+    bool CheckVersion(int ClientId, int AccountId, int NewVersion)
+    {
+        Accounts * Aux = GetAccountEvents(ClientId, AccountId);
+        if(Aux != NULL)
+        {
+            for(Events::const_iterator it = std::get<1>(*Aux)->begin(); it != std::get<1>(*Aux)->end(); ++it)
+            {
+                if((*it)->Version == NewVersion)
+                    return true;
+            }
+
+            return false;
         }
 
         return true;
     }
 
-    return false;
-}
+    int PersistAccount(int ClientId)
+    {
 
-int PersistAccount(int ClientId)
-{
+        ClientAccounts * Aaux = GetClientAccounts(ClientId);
+        if(Aaux != NULL)
+        {                
+            Events * ev = new Events();
+            std::get<1>(*Aaux)->push_back(new Accounts(++seed, ev));
+            return seed;
 
-    ClientAccounts * Aaux = GetClientAccounts(ClientId);
-    if(Aaux != NULL)
-    {                
-        Events * ev = new Events();
-        std::get<1>(*Aaux)->push_back(new Accounts(++seed, ev));
-        return seed;
+        }else{
 
-    }else{
+            Events * ev = new Events();
+            Aaux = new ClientAccounts(ClientId , new AccountEvents()); 
+            std::get<1>(*Aaux)->push_back(new Accounts(++seed, ev));
+            AllClients.push_back(Aaux);
+            return seed;
+        }
 
-        Events * ev = new Events();
-        Aaux = new ClientAccounts(ClientId , new AccountEvents()); 
-        std::get<1>(*Aaux)->push_back(new Accounts(++seed, ev));
-        AllClients.push_back(Aaux);
-        return seed;
+        return 0;
+      
+    };
 
-    }
-
-    return 0;
-  
-};
-
-void Persist(int ClientId, int AccountId, Events * ev, int NewVersion)
-{ 
-    try{
-
-        ClientAccounts * Caux = GetClientAccounts(ClientId);
-        if(Caux != NULL)
-        { 
+    void Persist(int ClientId, int AccountId, Events * ev, int NewVersion)
+    { 
+        try
+        {
             Accounts * Aaux = GetAccountEvents(ClientId, AccountId); 
             if(Aaux != NULL) //Account Exists
             { 
-                 if(!CheckVersion(ClientId, AccountId, NewVersion)) //If has not events after selected this account
-                 {                    
-                    std::cout << "We Detect an Inconsistence on your account. You Must Login again to change your account" << std::endl;
-                    return;                     
-                 }
-            
-                    for(Events::const_iterator it = ev->begin(); it != ev->end(); ++it)
-                    {
-                        Event * aux = *it;
-                        std::get<1>(*Aaux)->push_back(aux);
-                    }                      
-            }
-            else//Account Doesn't Exists, but Client have anothers accounts
-            {            
-                Events * Eaux = new Events();
-                for(Events::const_iterator it = ev->begin(); it != ev->end(); ++it)
-                {
-                    Event * aux = *it;
-                    Eaux->push_back(aux);
-                }              
-                std::get<1>(*Caux)->push_back(new Accounts(AccountId, Eaux));            
-            }
-        }
-        else//Account Doesn't Exists and Client have not accounts
-        {         
-                Events * Eaux = new Events();  
-                for(Events::const_iterator it = ev->begin(); it != ev->end(); ++it)
-                {
-                    Event * aux = *it;
-                    Eaux->push_back(aux);
-                }                  
+                if(CheckVersion(ClientId, AccountId, NewVersion)) //If has new events after selected this account
+                {        
 
-                Accounts * Aaux = new Accounts(AccountId, Eaux); 
-                AccountEvents * Aevn = new AccountEvents();
-                Aevn->push_back(Aaux);
-                Caux = new ClientAccounts(ClientId, Aevn);
-                AllClients.push_back(Caux);
+                    throw collide;                     
+                }
+
+                for(Events::const_iterator it = ev->begin(); it != ev->end(); ++it)
+                {
+                    Event * aux = *it;
+                    std::get<1>(*Aaux)->push_back(aux);
+                }                      
             }
         }
-        catch(std::exception &e)
+        catch(CollideDetection &e)
         {
-            throw;
+            std::cout << e.what() << std::endl;
+            throw collide;
         }
     }
 

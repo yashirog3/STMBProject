@@ -20,17 +20,17 @@ class EventHandler{
             Listeners ListenersList;
 
     public:
-            void Attach(ListenerPtr listener){
+           virtual void Attach(ListenerPtr listener){
                 if(ListenersList.end() != std::find(ListenersList.begin(), ListenersList.end(), listener))
                     return;
                 ListenersList.push_back(listener);
             }
 
-            void Dettach(ListenerPtr listener){
+           virtual void Dettach(ListenerPtr listener){
                 ListenersList.erase(std::remove(ListenersList.begin(), ListenersList.end(), listener), ListenersList.end());
             }
 
-            void Notify(ListenerPtr Target, T * Event){
+           virtual void Notify(ListenerPtr Target, T * Event){
                 for(typename Listeners::const_iterator it = ListenersList.begin(); it != ListenersList.end(); ++it)
                     if(*it == Target)
                         (*it)->Update(Event, *this);

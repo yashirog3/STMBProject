@@ -1,12 +1,16 @@
 # Mini Bank Project
 A C++ Event Database Program
 
-## Getting Started
-
-
 ### Prerequesites
-* libpqxx - To Production database
+
+To Production database
+
+* libpqxx 
 * Postgresql
+
+##Getting Started
+
+
 
 ## Building The Project
 
@@ -16,6 +20,8 @@ With Cmake
     * cd build
     * cmake ../
 
+If you-re using linux, there's a generated makefile on build directory. Just cd and make
+
 
 With GCC
 
@@ -24,7 +30,9 @@ With GCC
 
 ## Running The Testes
 
-    After compile the tests, just open the test and wait for completion
+After Make Files
+      
+-    make tests
 
 ## Author
 

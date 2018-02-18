@@ -1,11 +1,11 @@
-#ifndef REPOSITORYTEST_H_
-#define REPOSITORYTEST_H_
+#ifndef REPOSITORYMOCK_H_
+#define REPOSITORYMOCK_H_
 #include <gmock/gmock.h>
 #include <vector>
 #include <map>
 #include "../Dao/idaoaccount.h"
 
-class RepositoryTest : public IDaoAccount {
+class RepositoryMock : public IDaoAccount {
 
  public:
 

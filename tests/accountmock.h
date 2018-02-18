@@ -28,6 +28,7 @@ class AccountMock : public IAccount
         MOCK_METHOD1(PersistAccount, void(IDaoAccount * DaoAc));
         MOCK_METHOD1(UndoEvent,  void(Event * AcEvent));
 
+
    };
 
 

@@ -1,12 +1,9 @@
 #ifndef DAOACCOUNT_H_
 #define DAOACCOUNT_H_
-
 #include "idaoaccount.h"
 #include <pqxx/pqxx>
 
 class DaoAccount : public IDaoAccount {
-
-
     private:
 
         pqxx::connection_base &conn;
@@ -24,7 +21,7 @@ class DaoAccount : public IDaoAccount {
             {
                 ClientAccounts * Caux = new ClientAccounts(ClientId, new AccountEvents());
 
-                for(int i = 0; i < res.size(); i++)
+                for(unsigned int i = 0; i < res.size(); i++)
                 {
                     std::get<1>(*Caux)->push_back(GetAccountEvents(ClientId, res[i][0].as<int>()));
                 }
@@ -38,15 +35,13 @@ class DaoAccount : public IDaoAccount {
         {
 
             conn.prepare("GetAccountEvents", 
-                        "SELECT e.version, e.eventtype, e.value "
-                        "FROM event e JOIN account a ON e.accountid = a.accountid "
-                        "WHERE e.accountid = $1 AND a.clientid=$2;");
+                        "SELECT e.version, e.eventtype, e.value FROM event e JOIN account a ON e.accountid = a.accountid JOIN client c ON a.clientid=c.clientid WHERE c.clientid = $1 AND a.accountid = $2;");
 
-            pqxx::result res = tx.exec_prepared("GetAccountEvents", AccountId, ClientId);
+            pqxx::result res = tx.exec_prepared("GetAccountEvents", ClientId, AccountId);
             if(res.size() > 0)
             {
                 Events * Aux = new Events();
-                for(int i = 0; i < res.size(); i++)
+                for(unsigned int i = 0; i < res.size(); i++)
                 {                                                
                     switch(res[i][1].as<int>())
                     {
@@ -107,6 +102,8 @@ class DaoAccount : public IDaoAccount {
             std::cout << "An Error Occurred: " << e.what() << std::endl;
             tx.abort();            
         }
+
+        return 0;
     }
 
     //Persist Events on Database

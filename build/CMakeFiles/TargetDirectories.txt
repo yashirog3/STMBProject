@@ -1,0 +1,6 @@
+/home/giecht/Área de Trabalho/STMBProject/build/CMakeFiles/test.dir
+/home/giecht/Área de Trabalho/STMBProject/build/CMakeFiles/edit_cache.dir
+/home/giecht/Área de Trabalho/STMBProject/build/CMakeFiles/unittest.dir
+/home/giecht/Área de Trabalho/STMBProject/build/CMakeFiles/main.dir
+/home/giecht/Área de Trabalho/STMBProject/build/CMakeFiles/integrationtest.dir
+/home/giecht/Área de Trabalho/STMBProject/build/CMakeFiles/rebuild_cache.dir

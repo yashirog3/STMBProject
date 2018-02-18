@@ -8,6 +8,17 @@
 #include <vector>
 #include <map>
 
+
+class CollideDetection : public std::exception{
+
+    public:
+        virtual const char * what() const throw(){
+
+            return "We Detect an Inconsistence on your account. You Must Login again to change your account";
+
+        }
+}collide;
+
 class IDaoAccount{
     public:        
 

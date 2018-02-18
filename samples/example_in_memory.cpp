@@ -2,12 +2,11 @@
 #include "interface.h"
 #include "Dao/eventrepository.h"
 #include <pqxx/pqxx>
+#include <thread>
 
 using namespace std;
 
 EventRepository DaoAc;
-
-//Just an example
 
 int main(int argc, char ** argv)
 {  

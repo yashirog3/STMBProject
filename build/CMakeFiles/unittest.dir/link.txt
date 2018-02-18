@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/unittest.dir/tests/unittest.cpp.o  -o unittest -rdynamic ../tests//lib/libgtest.so ../tests//lib/libgtest_main.so ../tests//lib/libgmock.so ../tests//lib/libgmock_main.so -lpthread -Wl,-rpath,"/home/giecht/Área de Trabalho/STMBProject/tests/lib" 

@@ -23,6 +23,7 @@ class IAccount :    public EventHandler<DepositeAccountEvent>::Listener,
        virtual void PersistAccount(IDaoAccount * DaoAc) = 0;
        virtual void UndoEvent(Event * AcEvent) = 0;
        virtual ~IAccount() { };
+
 };
 
 

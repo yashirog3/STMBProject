@@ -14,6 +14,7 @@ class Query{
     IDaoAccount * DaoAc;
 
 public:
+    Query(IDaoAccount * DaoAc) : DaoAc(DaoAc) {};
 
     void Summary(Events * AcEvents)
     {
@@ -31,20 +32,21 @@ public:
                 default:
                     break;
             }
-
+            
             std::cout << (*it) << std::endl;
         }
             std::locale MyLoc("");
             std::cout.imbue(MyLoc);
-            std::cout << std::endl << "Balance: R$ " << Value << std::endl;
+            std::cout << std::endl << "Balance: R$ " << Value << std::endl << std::endl;
     }
 
-    Query(IDaoAccount * DaoAc) : DaoAc(DaoAc) {};
+
     void SummaryAccount(int ClientId, int AccountId)
     {
         Accounts * Aux = DaoAc->GetAccountEvents(ClientId, AccountId);
         if(Aux != NULL)
         {            
+           std::cout << "Account Id: " << std::get<0>(*Aux) << std::endl << std::endl; 
            Summary(std::get<1>(*Aux));
         }
     }
@@ -54,8 +56,10 @@ public:
         ClientAccounts * Aux = DaoAc->GetClientAccounts(ClientId);
         if(Aux != NULL)
         {          
+            std::cout << "Client Id: " << ClientId << std::endl;
             for(AccountEvents::const_iterator it = std::get<1>(*Aux)->begin(); it != std::get<1>(*Aux)->end(); ++it)
             {
+               std::cout << "Account Id: " << std::get<0>(**it) << std::endl << std::endl; 
                Summary(std::get<1>(**it));
             }        
         }          

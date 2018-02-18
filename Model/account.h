@@ -88,6 +88,7 @@ class Account :  public IAccount
             DaoAc->Persist(ClientId, AccountId, &AllEvents, NewVersion);
             AllEvents.clear();
         }
+        
 };
 
 

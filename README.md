@@ -11,7 +11,7 @@ A C++ Event Database Program
 
 ## Getting Started
 
-
+    There's a folder called samples that implement some interface functions. The main of root folder is a copy of samples/in_memory_example.cpp
 
 ## Building The Project
 

@@ -5,12 +5,26 @@ A C++ Event Database Program
 
 
 ### Prerequesites
-* libpqxx
+* libpqxx - To Production database
 * Postgresql
+
+## Building The Project
+
+With Cmake
+
+    * mkdir build
+    * cd build
+    * cmake ../
+
+
+With GCC
+
+    * g++ main.cpp -o main -std=c++11 -lpqxx -lpq
+    * g++ -L./lib -lgtest -lgtest_main -lgmock -lgmock_main -pthread -lpthread (testfile.cpp) -o test
 
 ## Running The Testes
 
-Tests will be added at end of development.
+    After compile the tests, just open the test and wait for completion
 
 ## Author
 

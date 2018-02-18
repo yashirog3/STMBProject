@@ -49,14 +49,14 @@ Accounts * GetAccountEvents(int ClientId, int AccountId)
     return NULL;
 }
 
-bool CheckVersion(int ClientId, int AccountId, int OldVersion)
+bool CheckVersion(int ClientId, int AccountId, int NewVersion)
 {
     Accounts * Aux = GetAccountEvents(ClientId, AccountId);
     if(Aux != NULL)
     {
         for(Events::const_iterator it = std::get<1>(*Aux)->begin(); it != std::get<1>(*Aux)->end(); ++it)
         {
-            if((*it)->Version == OldVersion+1)
+            if((*it)->Version == NewVersion)
                 return false;
         }
 
@@ -90,7 +90,7 @@ int PersistAccount(int ClientId)
   
 };
 
-void Persist(int ClientId, int AccountId, Events * ev, int OldVersion)
+void Persist(int ClientId, int AccountId, Events * ev, int NewVersion)
 { 
     try{
 
@@ -100,9 +100,9 @@ void Persist(int ClientId, int AccountId, Events * ev, int OldVersion)
             Accounts * Aaux = GetAccountEvents(ClientId, AccountId); 
             if(Aaux != NULL) //Account Exists
             { 
-                 if(!CheckVersion(ClientId, AccountId, OldVersion))
-                 {
-                    std::cout << "We Detect an Inconsistence on your account. Your Account could not be changed" << std::endl;
+                 if(!CheckVersion(ClientId, AccountId, NewVersion)) //If has not events after selected this account
+                 {                    
+                    std::cout << "We Detect an Inconsistence on your account. You Must Login again to change your account" << std::endl;
                     return;                     
                  }
             
@@ -131,6 +131,7 @@ void Persist(int ClientId, int AccountId, Events * ev, int OldVersion)
                     Event * aux = *it;
                     Eaux->push_back(aux);
                 }                  
+
                 Accounts * Aaux = new Accounts(AccountId, Eaux); 
                 AccountEvents * Aevn = new AccountEvents();
                 Aevn->push_back(Aaux);

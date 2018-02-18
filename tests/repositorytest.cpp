@@ -1,53 +1,41 @@
 #include "repositorytest.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include "../Dao/eventrepository.h"
 #include "../Event/event.h"
+#include "../query.h"
 #include "../interface.h"
 #include <iostream>
 
-using ::testing::AtLeast;
-using ::testing::Mock;
+EventRepository DaoAc;
+Query Q(&DaoAc);
+Interface Cli1(1, &DaoAc); 
+
 using ::testing::_;
-using ::testing::Return;
-
-RepositoryTest DaoAc;
-Interface * Cli1 = new Interface(1, &DaoAc); 
-
+using ::testing::An;
 
 TEST(RepositoryTest, PersistAccountTest)
 {   
-
-   EXPECT_CALL(DaoAc, PersistAccount(_))
-            .Times(1)
-            .WillOnce(Return(1));
-    
-    Cli1->CreateAccount();
-
-    EXPECT_TRUE(Mock::VerifyAndClear(&DaoAc));
+   EXPECT_TRUE(DaoAc.PersistAccount(1) == 1);    
 }
 
+TEST(RepositoryTest, GetAccountEventsTest)
+{
+    EXPECT_TRUE(DaoAc.GetAccountEvents(1,1) != NULL);
+    EXPECT_TRUE(DaoAc.GetClientAccounts(1) != NULL);
+}
 
 TEST(RepositoryTest, GetClientAccountsTest)
 {
-
-    EXPECT_CALL(DaoAc, GetClientAccounts(1))
-                .Times(1);
-
-    EXPECT_CALL(DaoAc, Persist(_,_,_,_))
-                .Times(1);
-
-    EXPECT_CALL(DaoAc, CheckVersion(_,_,_))
-                .Times(1)
-                .WillOnce(Return(true));
-    Cli1->Save();
+   EXPECT_TRUE(DaoAc.GetClientAccounts(1) != NULL);
+   EXPECT_TRUE(DaoAc.CheckVersion(1,1,1));
 }
 
-TEST(RepositoryTest, GetAccountEventsTest){
+TEST(RepositoryTest, PersistEventsTest)
+{
 
-    EXPECT_CALL(DaoAc, GetAccountEvents(_,1))
-                .Times(1);
-
-    Cli1->Deposite(100);
+    Events Ev;
+    EXPECT_NO_THROW(DaoAc.Persist(1,1,&Ev,0));
 
 }
 

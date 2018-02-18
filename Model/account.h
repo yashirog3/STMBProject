@@ -5,36 +5,33 @@
 #include <vector>
 #include <map>
 
-#include "../Handler/createaccounthandler.h"
-#include "../Handler/depositeaccounthandler.h"
-#include "../Handler/withdrawaccounthandler.h"
-#include "../Handler/persistaccounthandler.h"
-#include "../Handler/undoaccounthandler.h"
-#include "../Handler/eventhandler.h"
-#include "../Dao/daoaccount.h"
+
+#include "../Dao/idaoaccount.h"
 #include "iaccount.h"
 
 class Account :  public IAccount
 {
     private:
 
-        int AccountId = 0;
-        int ClientId = 0;
+        int AccountId;
+        int ClientId;
         double AccountMoney = 0;
         int OldVersion = 0;
         int NewVersion = 0;
 
-        IDaoAccount * DaoAc;
         std::vector<Event *> AllEvents;
 
         //Create an Account;
         void Update(CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender)
         {          
-            AccountId = DaoAc->PersistAccount(ClientId);
-            AcEvent->Version = ++NewVersion;
             if(AcEvent->NewEvent)
-            {              
+            {       
+                AcEvent->Version = ++NewVersion;        
                 AllEvents.push_back(AcEvent);
+            }
+            else
+            {            
+                OldVersion = ++NewVersion;                   
             }                       
         }
 
@@ -42,12 +39,15 @@ class Account :  public IAccount
         void Update(DepositeAccountEvent * AcEvent, EventHandler<DepositeAccountEvent> & Sender)
         {
             AccountMoney += AcEvent->Value;
-            AcEvent->Version = ++NewVersion;
-
             if(AcEvent->NewEvent)
-            {              
+            {       
+                AcEvent->Version = ++NewVersion;        
                 AllEvents.push_back(AcEvent);
-            }           
+            }
+            else
+            {            
+                OldVersion = ++NewVersion;                   
+            }                 
         }
 
         //Withdraw from account
@@ -60,33 +60,34 @@ class Account :  public IAccount
             }
             
             AccountMoney -= AcEvent->Value;
-            AcEvent->Version = ++NewVersion;
-
             if(AcEvent->NewEvent)
-            {              
+            {       
+                AcEvent->Version = ++NewVersion;        
                 AllEvents.push_back(AcEvent);
-            }           
+            }
+            else
+            {            
+                OldVersion = ++NewVersion;           
+            }          
         }
 
+    public:
+        
+        Account() {}
+        Account(int ClientId, int AccountId) : ClientId(ClientId), AccountId(AccountId) {}
+
         //Undo Last Event
-        void Update(UndoAccountEvent * AcEvent, EventHandler<UndoAccountEvent> & Sender)
+        void UndoEvent(Event * AcEvent)
         {
             AllEvents.pop_back();
             NewVersion--;
         }
 
-        //Persiste account on In Memory Repository and Database
-        void Update(PersistAccountEvent * AcEvent, EventHandler<PersistAccountEvent> & Sender)
+        void PersistAccount(IDaoAccount * DaoAc = NULL)
         {                                 
-            DaoAc->Persist(ClientId, AccountId, &AllEvents, OldVersion);
+            DaoAc->Persist(ClientId, AccountId, &AllEvents, NewVersion);
             AllEvents.clear();
         }
-
-    public:
-        
-        Account(IDaoAccount * DaoAc) : AccountId(0), DaoAc(DaoAc) {};
-        Account(int ClientId, IDaoAccount * DaoAc) : ClientId(ClientId), DaoAc(DaoAc) {};
-        ~Account() {};
 };
 
 

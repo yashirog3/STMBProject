@@ -11,7 +11,6 @@ class WithdrawAccountEvent : public Event
         this->Version = Version;
         this->Value = Value;
         this->EventType = WITHDRAW; 
-        this->NewEvent = NewEvent;     
     };
 
 

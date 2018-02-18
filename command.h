@@ -10,12 +10,14 @@
 #include "Event/undoaccountevent.h"
 #include "Handler/undoaccounthandler.h"
 #include "Model/account.h"
+#include "Dao/idaoaccount.h"
+#include "icommand.h"
 #include "Handler/persistaccounthandler.h"
 #include <algorithm>
 #include <vector>
 #include <map>
 
-class Command
+class Command : public ICommand
 {
     private:
 
@@ -25,11 +27,12 @@ class Command
         UndoAccountHandler UndoAccount; 
         PersistAccountHandler  Persistence;        
     
-        std::shared_ptr<Account> Ac;
+        std::shared_ptr<Account> Ac = NULL;
 
     public:
 
-        Command(Account Ac) : Ac(std::make_shared<Account>(Ac)) {} ;      
+        Command() {}
+        Command(Account Ac) : Ac(std::make_shared<Account>(Ac)) {}
 
         //Create an New Account
         void DoCreate(CreateAccountEvent * AcEvent)
@@ -53,16 +56,14 @@ class Command
         }
 
         //Persist In Memory
-        void DoPersist()
+        void DoPersist(IDaoAccount * DaoAc)
         {
-            Persistence.Attach(Ac);
-            Persistence.Notify(Ac, new PersistAccountEvent());
+            Ac.get()->PersistAccount(DaoAc);
         }
 
         void DoUndo()
         {
-            UndoAccount.Attach(Ac);
-            UndoAccount.Notify(Ac, new UndoAccountEvent());
+
         }
                
 };

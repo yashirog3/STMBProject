@@ -12,23 +12,23 @@
 #include "../Handler/persistaccounthandler.h"
 #include "../Handler/undoaccounthandler.h"
 #include "../Handler/eventhandler.h"
-#include "../Dao/daoaccount.h"
+#include "../Dao/idaoaccount.h"
+#include "../Model/account.h"
 #include "../Event/event.h"
 #include <gmock/gmock.h>
-
 
 class AccountMock : public IAccount 
 {
 
-    private:
+    public:
+
         MOCK_METHOD2(Update, void (CreateAccountEvent * AcEvent, EventHandler<CreateAccountEvent> & Sender));
         MOCK_METHOD2(Update, void (DepositeAccountEvent * AcEvent, EventHandler<DepositeAccountEvent> & Sender));
         MOCK_METHOD2(Update, void (WithdrawAccountEvent * AcEvent, EventHandler<WithdrawAccountEvent> & Sender));
-        MOCK_METHOD2(Update, void (UndoAccountEvent * AcEvent, EventHandler<UndoAccountEvent> & Sender));
-        MOCK_METHOD2(Update, void (PersistAccountEvent * AcEvent, EventHandler<PersistAccountEvent> & Sender));
+        MOCK_METHOD1(PersistAccount, void(IDaoAccount * DaoAc));
+        MOCK_METHOD1(UndoEvent,  void(Event * AcEvent));
 
-    
-};
+   };
 
 
 #endif

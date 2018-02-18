@@ -5,7 +5,6 @@
 #include "Model/account.h"
 #include "command.h"
 #include "query.h"
-#include "Dao/idaoaccount.h"
 
 class Interface
 {
@@ -15,23 +14,25 @@ class Interface
         typedef std::vector<Accounts *> AccountEvents;
         typedef std::pair<int, AccountEvents *> ClientAccounts;
 
-
-        int ClientId;
+        int ClientId = 0;
         IDaoAccount * DaoAc;
+        Account * Ac = NULL;
+        Command * Commands = NULL;
         Query Queries = Query(DaoAc);
-        Account Ac = Account(ClientId, DaoAc);
-        Command Commands = Command(Ac);
 
     public:        
 
-        Interface(int ClientId, IDaoAccount * DaoAc) : ClientId(ClientId), DaoAc(DaoAc) {};
+        Interface(int ClientId, IDaoAccount * DaoAc) : ClientId(ClientId),  DaoAc(DaoAc) {}
 
         //Client can create new clients
         void CreateAccount()
         {
             try
             {                
-                Commands.DoCreate(new CreateAccountEvent());
+                int AccountId = DaoAc->PersistAccount(ClientId);
+                Ac = new Account(ClientId, AccountId);
+                Commands = new Command(*Ac);
+                Commands->DoCreate(new CreateAccountEvent());
 
             //Here we can send a mail
             }
@@ -39,7 +40,7 @@ class Interface
             {
                 throw;
             }
-        };
+        }
 
         //Client Can retrieve an persisted account
         void GetAccount(int AccountId)
@@ -47,23 +48,28 @@ class Interface
             try
             {
                 Accounts * MyAccount = DaoAc->GetAccountEvents(ClientId, AccountId);
-                for(Events::const_iterator it = std::get<1>(*MyAccount)->begin(); it != std::get<1>(*MyAccount)->end(); ++it)
-                {       
-                    switch((*it)->EventType)
-                    {
-                        case CREATE:
-                            Commands.DoCreate(new CreateAccountEvent((*it)->Version, (*it)->NewEvent));
-                        break;
-                        case DEPOSITE:
-                            Commands.DoDeposite(new DepositeAccountEvent((*it)->Value,(*it)->Version, (*it)->NewEvent));
-                        break;
-                        case WITHDRAW:
-                            Commands.DoWithdraw(new WithdrawAccountEvent((*it)->Value,(*it)->Version, (*it)->NewEvent));
-                        break;
+                if(MyAccount != NULL){
+                    Ac = new Account(ClientId, AccountId);
+                    Commands = new Command(*Ac);
 
-                        default:
-                        break;
-                    }                    
+                    for(Events::const_iterator it = std::get<1>(*MyAccount)->begin(); it != std::get<1>(*MyAccount)->end(); ++it)
+                    {       
+                        switch((*it)->EventType)
+                        {
+                            case CREATE:
+                                Commands->DoCreate(new CreateAccountEvent((*it)->Version, false));
+                            break;
+                            case DEPOSITE:
+                                Commands->DoDeposite(new DepositeAccountEvent((*it)->Value,(*it)->Version, false));
+                            break;
+                            case WITHDRAW:
+                                Commands->DoWithdraw(new WithdrawAccountEvent((*it)->Value,(*it)->Version, false));
+                            break;
+
+                            default:
+                            break;
+                        }                    
+                    }
                 }
             }
             catch(std::exception &e)
@@ -75,41 +81,51 @@ class Interface
         //Client Can Deposite in an account
         void Deposite(double Value)
         {
-                Commands.DoDeposite(new DepositeAccountEvent(Value));
-        };
+            if(Commands != NULL)
+                Commands->DoDeposite(new DepositeAccountEvent(Value));  
+            else
+                throw;
+        }
 
         //Client can Withdraw from an account
         void Withdraw(double Value)
         {                
-                Commands.DoWithdraw(new WithdrawAccountEvent(Value));    
-        };
+            if(Commands != NULL)
+                Commands->DoWithdraw(new WithdrawAccountEvent(Value));
+            else
+                throw;    
+        }
 
         //Client Will Persist All Events of an account
         void Save()
         {
-                Commands.DoPersist();
-        };
+            if(Commands != NULL)
+                Commands->DoPersist(DaoAc);
+            else
+                throw;
+        }
 
         //Client Can Undo Last Event
         void Undo()
-        {
-                Commands.DoUndo();  
+        {          
+            if(Commands != NULL)  
+                Commands->DoUndo();  
+            else
+                throw;
 
-        };
+        }
 
         //Summary of an especified account
         void SummaryAccount(int AccountId)
         {
             Queries.SummaryAccount(ClientId, AccountId);
-        };
+        }
 
         //Summary All Client Accounts
         void SummaryAllAccounts()
         {
             Queries.SummaryAllAccounts(ClientId);
-        };
-
-
+        }
 };
 
 #endif // CLIENT_H_

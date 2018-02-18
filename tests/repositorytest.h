@@ -7,11 +7,6 @@
 
 class RepositoryTest : public IDaoAccount {
 
- private:
-    typedef std::vector<ClientAccounts *> Repository;
-
-    Repository AllClients;
-
  public:
 
       MOCK_METHOD1(GetClientAccounts, ClientAccounts*(int ClientId));
@@ -19,6 +14,7 @@ class RepositoryTest : public IDaoAccount {
       MOCK_METHOD3(CheckVersion, bool(int ClientId, int AccountId, int OldVersion));
       MOCK_METHOD1(PersistAccount, int(int ClientId));
       MOCK_METHOD4(Persist, void(int ClientId, int AccountId, Events * AllEvents, int OldVersion));
+
 };
 
 

@@ -29,14 +29,10 @@ CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Dao/userdefs.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Event/createaccountevent.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Event/depositeaccountevent.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Event/event.h
-CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Event/persistaccountevent.h
-CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Event/undoaccountevent.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Event/withdrawaccountevent.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Handler/createaccounthandler.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Handler/depositeaccounthandler.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Handler/eventhandler.h
-CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Handler/persistaccounthandler.h
-CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Handler/undoaccounthandler.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Handler/withdrawaccounthandler.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Model/account.h
 CMakeFiles/integrationtest.dir/tests/integrationtest.cpp.o: ../Model/iaccount.h

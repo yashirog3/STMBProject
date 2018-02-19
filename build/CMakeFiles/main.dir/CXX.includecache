@@ -56,14 +56,6 @@ event.h
 ostream
 -
 
-/home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
-event.h
-/home/giecht/Área de Trabalho/STMBProject/Event/event.h
-
-/home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
-event.h
-/home/giecht/Área de Trabalho/STMBProject/Event/event.h
-
 /home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
 event.h
 /home/giecht/Área de Trabalho/STMBProject/Event/event.h
@@ -87,18 +79,6 @@ algorithm
 -
 memory
 -
-
-/home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
-../Event/persistaccountevent.h
-/home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
-eventhandler.h
-/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
-
-/home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
-../Event/undoaccountevent.h
-/home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
-eventhandler.h
-/home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
 
 /home/giecht/Área de Trabalho/STMBProject/Handler/withdrawaccounthandler.h
 ../Event/withdrawaccountevent.h
@@ -127,10 +107,6 @@ iaccount.h
 /home/giecht/Área de Trabalho/STMBProject/Handler/depositeaccounthandler.h
 ../Handler/withdrawaccounthandler.h
 /home/giecht/Área de Trabalho/STMBProject/Handler/withdrawaccounthandler.h
-../Handler/persistaccounthandler.h
-/home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
-../Handler/undoaccounthandler.h
-/home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
 ../Handler/eventhandler.h
 /home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
 ../Dao/idaoaccount.h
@@ -149,20 +125,12 @@ Event/depositeaccountevent.h
 /home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
 Event/withdrawaccountevent.h
 /home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
-Event/persistaccountevent.h
-/home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
-Event/undoaccountevent.h
-/home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
-Handler/undoaccounthandler.h
-/home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
 Model/account.h
 /home/giecht/Área de Trabalho/STMBProject/Model/account.h
 Dao/idaoaccount.h
 /home/giecht/Área de Trabalho/STMBProject/Dao/idaoaccount.h
 icommand.h
 /home/giecht/Área de Trabalho/STMBProject/icommand.h
-Handler/persistaccounthandler.h
-/home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
 algorithm
 -
 vector

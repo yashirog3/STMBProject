@@ -5,8 +5,8 @@
 #include <map>
 #include "../Dao/idaoaccount.h"
 
-class RepositoryMock : public IDaoAccount {
-
+class RepositoryMock : public IDaoAccount 
+{
  public:
 
       MOCK_METHOD1(GetClientAccounts, ClientAccounts*(int ClientId));
@@ -14,7 +14,6 @@ class RepositoryMock : public IDaoAccount {
       MOCK_METHOD3(CheckVersion, bool(int ClientId, int AccountId, int OldVersion));
       MOCK_METHOD1(PersistAccount, int(int ClientId));
       MOCK_METHOD4(Persist, void(int ClientId, int AccountId, Events * AllEvents, int OldVersion));
-
 };
 
 

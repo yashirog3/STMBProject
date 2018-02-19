@@ -1,0 +1,94 @@
+Start testing: Feb 18 22:49 -03
+----------------------------------------------------------
+1/2 Testing: unittest
+1/2 Test: unittest
+Command: "/home/giecht/Área de Trabalho/STMBProject/build/unittest"
+Directory: /home/giecht/Área de Trabalho/STMBProject/build
+"unittest" start time: Feb 18 22:49 -03
+Output:
+----------------------------------------------------------
+[==========] Running 4 tests from 2 test cases.
+[----------] Global test environment set-up.
+[----------] 1 test from AccountTest
+[ RUN      ] AccountTest.PersistTest
+[       OK ] AccountTest.PersistTest (0 ms)
+[----------] 1 test from AccountTest (0 ms total)
+
+[----------] 3 tests from RepositoryTest
+[ RUN      ] RepositoryTest.PersistAccountTest
+[       OK ] RepositoryTest.PersistAccountTest (0 ms)
+[ RUN      ] RepositoryTest.GetAccountEventsTest
+[       OK ] RepositoryTest.GetAccountEventsTest (0 ms)
+[ RUN      ] RepositoryTest.PersistTest
+[       OK ] RepositoryTest.PersistTest (0 ms)
+[----------] 3 tests from RepositoryTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 2 test cases ran. (0 ms total)
+[  PASSED  ] 4 tests.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"unittest" end time: Feb 18 22:49 -03
+"unittest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: integrationtest
+2/2 Test: integrationtest
+Command: "/home/giecht/Área de Trabalho/STMBProject/build/integrationtest"
+Directory: /home/giecht/Área de Trabalho/STMBProject/build
+"integrationtest" start time: Feb 18 22:49 -03
+Output:
+----------------------------------------------------------
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from IntegrationTest
+[ RUN      ] IntegrationTest.CreateAccountTest
+[       OK ] IntegrationTest.CreateAccountTest (0 ms)
+[ RUN      ] IntegrationTest.DepositeAccountTest
+[       OK ] IntegrationTest.DepositeAccountTest (0 ms)
+[ RUN      ] IntegrationTest.WithdrawAccountTest
+[       OK ] IntegrationTest.WithdrawAccountTest (0 ms)
+[ RUN      ] IntegrationTest.PersistAccountTest
+We Detect an Inconsistence on your account. You Must Login again to change your account
+[       OK ] IntegrationTest.PersistAccountTest (13 ms)
+[ RUN      ] IntegrationTest.UndoAccountTest
+[       OK ] IntegrationTest.UndoAccountTest (0 ms)
+[ RUN      ] IntegrationTest.SummaryAccountTest
+Account Id: 1
+
+Event: 1 - Type: Create - Value: 0
+Event: 2 - Type: Deposite - Value: 200
+Event: 3 - Type: Withdraw - Value: 200
+Event: 4 - Type: Deposite - Value: 300
+
+Balance: R$ 300
+
+[       OK ] IntegrationTest.SummaryAccountTest (1 ms)
+[ RUN      ] IntegrationTest.SummaryAllAccountsTest
+Client Id: 1
+Account Id: 1
+
+Event: 1 - Type: Create - Value: 0
+Event: 2 - Type: Deposite - Value: 200
+Event: 3 - Type: Withdraw - Value: 200
+Event: 4 - Type: Deposite - Value: 300
+
+Balance: R$ 300
+
+[       OK ] IntegrationTest.SummaryAllAccountsTest (0 ms)
+[----------] 7 tests from IntegrationTest (14 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran. (14 ms total)
+[  PASSED  ] 7 tests.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"integrationtest" end time: Feb 18 22:49 -03
+"integrationtest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Feb 18 22:49 -03

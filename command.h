@@ -6,13 +6,9 @@
 #include "Event/createaccountevent.h"
 #include "Event/depositeaccountevent.h"
 #include "Event/withdrawaccountevent.h"
-#include "Event/persistaccountevent.h"
-#include "Event/undoaccountevent.h"
-#include "Handler/undoaccounthandler.h"
 #include "Model/account.h"
 #include "Dao/idaoaccount.h"
 #include "icommand.h"
-#include "Handler/persistaccounthandler.h"
 #include <algorithm>
 #include <vector>
 #include <map>
@@ -23,9 +19,7 @@ class Command : public ICommand
 
         DepositeAccountHandler Deposite; 
         WithdrawAccountHandler Withdraw; 
-        CreateAccountHandler   CreateAccount;
-        UndoAccountHandler UndoAccount; 
-        PersistAccountHandler  Persistence;        
+        CreateAccountHandler   CreateAccount;      
     
         std::shared_ptr<Account> Ac = NULL;
 

@@ -11,7 +11,8 @@
 
 static unsigned int seed = 0;
 
-class EventRepository : public IDaoAccount{
+class EventRepository : public IDaoAccount
+{
 
 typedef std::vector<ClientAccounts *> Repository;
 Repository AllClients;

@@ -46,14 +46,10 @@ CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Dao/userdefs.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Event/createaccountevent.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Event/depositeaccountevent.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Event/event.h
-CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Event/persistaccountevent.h
-CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Event/undoaccountevent.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Event/withdrawaccountevent.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Handler/createaccounthandler.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Handler/depositeaccounthandler.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Handler/eventhandler.h
-CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Handler/persistaccounthandler.h
-CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Handler/undoaccounthandler.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Handler/withdrawaccounthandler.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Model/account.h
 CMakeFiles/unittest.dir/tests/unittest.cpp.o: ../Model/iaccount.h

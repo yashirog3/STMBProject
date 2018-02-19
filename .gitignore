@@ -2,3 +2,6 @@ main
 test/repositorytest
 test/accounttest
 buid
+integrationtest
+main
+unittest

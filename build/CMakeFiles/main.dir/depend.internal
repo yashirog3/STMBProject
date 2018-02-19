@@ -8,14 +8,10 @@ CMakeFiles/main.dir/main.cpp.o
  /home/giecht/Área de Trabalho/STMBProject/Event/createaccountevent.h
  /home/giecht/Área de Trabalho/STMBProject/Event/depositeaccountevent.h
  /home/giecht/Área de Trabalho/STMBProject/Event/event.h
- /home/giecht/Área de Trabalho/STMBProject/Event/persistaccountevent.h
- /home/giecht/Área de Trabalho/STMBProject/Event/undoaccountevent.h
  /home/giecht/Área de Trabalho/STMBProject/Event/withdrawaccountevent.h
  /home/giecht/Área de Trabalho/STMBProject/Handler/createaccounthandler.h
  /home/giecht/Área de Trabalho/STMBProject/Handler/depositeaccounthandler.h
  /home/giecht/Área de Trabalho/STMBProject/Handler/eventhandler.h
- /home/giecht/Área de Trabalho/STMBProject/Handler/persistaccounthandler.h
- /home/giecht/Área de Trabalho/STMBProject/Handler/undoaccounthandler.h
  /home/giecht/Área de Trabalho/STMBProject/Handler/withdrawaccounthandler.h
  /home/giecht/Área de Trabalho/STMBProject/Model/account.h
  /home/giecht/Área de Trabalho/STMBProject/Model/iaccount.h
